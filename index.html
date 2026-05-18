@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplikasi Pengecekan Dino Bangas & Primbon</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="haribaik.png">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -163,7 +166,8 @@
             return (
                 <div className="max-w-md mx-auto p-4 md:p-6 space-y-6 pb-12">
                     {/* Header */}
-                    <div className="text-center space-y-2 mt-4">
+                    <div className="text-center space-y-2 mt-4 flex flex-col items-center">
+                        <img src="haribaik.png" alt="Logo Hari Baik" className="w-24 h-24 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.5)] mb-2 border-2 border-slate-700/50" />
                         <h1 className="text-3xl font-extrabold tracking-tight gradient-text">Primbon Bangas</h1>
                         <p className="text-slate-400 text-sm">Cek Otomatis Hari Bangas, Pangkreman & Saran Warna Pakaian</p>
                     </div>
