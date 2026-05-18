@@ -8,6 +8,11 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="haribaik.png">
     
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -19,18 +24,52 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-        body {
-            background-color: #0f172a; /* Tailwind slate-900 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100dvh; /* Tinggi pas 1 layar HP otomatis */
+            overflow: hidden; /* Menghilangkan fungsi scroll di body utama */
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #020617 100%); /* Background gradient premium */
             color: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+        }
+        #root {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        /* Modern Glassmorphism UI */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05); /* Sedikit lebih terang */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
         }
         .gradient-text {
-            background: linear-gradient(to right, #a855f7, #ec4899);
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #ea580c); /* Nuansa Emas/Gold yang identik dengan Primbon */
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
         }
-        .card-gradient {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            box-shadow:  5px 5px 15px #0a0f1c, -5px -5px 15px #141f38;
+        
+        /* Modal Animations */
+        .modal-overlay {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+        .modal-content {
+            animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; backdrop-filter: blur(0px); }
+            to { opacity: 1; backdrop-filter: blur(8px); }
+        }
+        @keyframes scaleUp {
+            from { transform: scale(0.95) translateY(10px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
         }
     </style>
 </head>
@@ -122,14 +161,22 @@
         // Fungsi Rekomendasi berdasarkan input teks user
         const getRekomendasi = (pasaran) => {
             const data = {
-                'Legi': { warna: 'PUTIH', arah: 'TIMUR', bg: 'bg-slate-100 text-slate-900', border: 'border-slate-300' },
-                'Pahing': { warna: 'MERAH', arah: 'SELATAN', bg: 'bg-red-600 text-white', border: 'border-red-400' },
-                'Pon': { warna: 'KUNING', arah: 'BARAT', bg: 'bg-yellow-400 text-slate-900', border: 'border-yellow-200' },
-                'Wage': { warna: 'HITAM', arah: 'UTARA', bg: 'bg-black text-white', border: 'border-slate-700' },
-                'Kliwon': { warna: 'NETRAL / BEBAS', arah: 'TENGAH', bg: 'bg-gradient-to-r from-teal-500 to-emerald-500 text-white', border: 'border-teal-300' }
+                'Legi': { warna: 'PUTIH', arah: 'TIMUR', bg: 'bg-white text-slate-900', border: 'border-white shadow-[0_0_15px_rgba(255,255,255,0.4)]' },
+                'Pahing': { warna: 'MERAH', arah: 'SELATAN', bg: 'bg-red-500 text-white', border: 'border-red-400 shadow-[0_0_15px_rgba(239,68,68,0.4)]' },
+                'Pon': { warna: 'KUNING', arah: 'BARAT', bg: 'bg-yellow-400 text-slate-900', border: 'border-yellow-300 shadow-[0_0_15px_rgba(250,204,21,0.4)]' },
+                'Wage': { warna: 'HITAM', arah: 'UTARA', bg: 'bg-neutral-900 text-white', border: 'border-neutral-600 shadow-[0_0_15px_rgba(0,0,0,0.5)]' },
+                'Kliwon': { warna: 'NETRAL / BEBAS', arah: 'TENGAH', bg: 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white', border: 'border-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.4)]' }
             };
             return data[pasaran] || data['Kliwon'];
         };
+
+        // Data Tabel Bangas (Berdasarkan Gambar)
+        const TABLE_BANGAS_DATA = [
+            { id: 1, bulan: 'Suro, Sapar, Mulud', hari: 'Sabtu/Minggu Legi', arah: 'Wetan (Timur)' },
+            { id: 2, bulan: "Ba'da Mulud, Jum.Awal, Jum.Akhir", hari: 'Senin/Selasa Pahing', arah: 'Kidul (Selatan)' },
+            { id: 3, bulan: 'Rejeb, Ruwah, Poso', hari: 'Rabu/Kamis Pon', arah: 'Kulon (Barat)' },
+            { id: 4, bulan: 'Sawal, Selo, Besar', hari: "Jum'at Wage", arah: 'Lor (Utara)' },
+        ];
 
         // --- Main Component ---
         const App = () => {
@@ -139,6 +186,9 @@
             const [pangkremanPasaran, setPangkremanPasaran] = useState(null);
             const [isPangkreman, setIsPangkreman] = useState(false);
             const [rekomendasi, setRekomendasi] = useState(null);
+            
+            // State untuk memunculkan tabel menu
+            const [showModal, setShowModal] = useState(false);
 
             useEffect(() => {
                 const dateObj = new Date(selectedDate);
@@ -161,102 +211,164 @@
 
             }, [selectedDate]);
 
-            if (!javaData || !rekomendasi) return <div className="text-center mt-20">Memuat perhitungan...</div>;
+            if (!javaData || !rekomendasi) return <div className="text-center mt-20 text-white font-bold">Memuat perhitungan...</div>;
 
             return (
-                <div className="max-w-md mx-auto p-4 md:p-6 space-y-6 pb-12">
-                    {/* Header */}
-                    <div className="text-center space-y-2 mt-4 flex flex-col items-center">
-                        <img src="haribaik.png" alt="Logo Hari Baik" className="w-24 h-24 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.5)] mb-2 border-2 border-slate-700/50" />
-                        <h1 className="text-3xl font-extrabold tracking-tight gradient-text">Primbon Bangas</h1>
-                        <p className="text-slate-400 text-sm">Cek Otomatis Hari Bangas, Pangkreman & Saran Warna Pakaian</p>
-                    </div>
+                <div className="w-full max-w-md h-full flex flex-col relative text-slate-200 overflow-hidden">
+                    {/* Modern Background Blur Effects */}
+                    <div className="absolute top-[-10%] left-[-20%] w-[60%] h-[40%] bg-amber-600/20 blur-[100px] rounded-full pointer-events-none"></div>
+                    <div className="absolute bottom-[-10%] right-[-20%] w-[60%] h-[40%] bg-indigo-600/20 blur-[100px] rounded-full pointer-events-none"></div>
 
-                    {/* Date Picker */}
-                    <div className="card-gradient rounded-2xl p-5 border border-slate-700">
-                        <label className="block text-sm font-medium text-slate-400 mb-2">Pilih Tanggal:</label>
-                        <input 
-                            type="date" 
-                            value={selectedDate}
-                            onChange={(e) => setSelectedDate(e.target.value)}
-                            className="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        />
-                    </div>
-
-                    {/* Kalender Jawa Result */}
-                    <div className="card-gradient rounded-2xl p-6 border border-slate-700 text-center relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-10">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                        </div>
-                        <h2 className="text-sm text-slate-400 font-semibold uppercase tracking-wider mb-1">Penanggalan Jawa</h2>
-                        <div className="text-4xl font-black text-purple-400 mb-2">
-                            {javaData.hari} {javaData.pasaran}
-                        </div>
-                        <div className="text-lg text-slate-300">
-                            {javaData.tanggal} {javaData.bulan} {javaData.tahun}
-                        </div>
-                    </div>
-
-                    {/* Alert Bangas & Pangkreman */}
-                    <div className="space-y-4">
-                        {/* Status Bangas */}
-                        <div className={`rounded-2xl p-5 border ${bangasData.isBangas ? 'bg-red-900/40 border-red-500' : 'bg-emerald-900/30 border-emerald-500/50'}`}>
-                            <div className="flex items-start space-x-3">
-                                <div className={`p-2 rounded-full ${bangasData.isBangas ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
-                                    {bangasData.isBangas ? (
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                                    ) : (
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                                    )}
+                    <div className="flex-1 flex flex-col p-3 sm:p-4 gap-3 z-10">
+                        
+                        {/* Header: Modern UI + Tombol Menu Tabel */}
+                        <div className="flex items-center justify-between shrink-0 mt-1 mb-1">
+                            <div className="flex items-center gap-3">
+                                <img src="haribaik.png" alt="Logo" className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl shadow-[0_0_15px_rgba(251,191,36,0.3)] border border-amber-500/30 bg-black/40 p-0.5" />
+                                <div className="text-left">
+                                    <h1 className="text-xl sm:text-2xl font-black tracking-tight gradient-text leading-none drop-shadow-md">Primbon Bangas</h1>
+                                    <p className="text-amber-200/70 text-[10px] sm:text-xs mt-1.5 leading-tight font-medium tracking-wide">CEK OTOMATIS & TERAKURAT</p>
                                 </div>
-                                <div>
-                                    <h3 className={`font-bold text-lg ${bangasData.isBangas ? 'text-red-400' : 'text-emerald-400'}`}>
-                                        Status Dino Bangas
-                                    </h3>
-                                    <p className="text-slate-300 text-sm mt-1">{bangasData.desc}</p>
-                                </div>
+                            </div>
+                            <button 
+                                onClick={() => setShowModal(true)}
+                                className="p-2 sm:px-3 sm:py-2 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all shadow-lg flex items-center gap-2 backdrop-blur-md"
+                                title="Lihat Tabel Bangas"
+                            >
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-400"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+                                <span className="hidden sm:inline text-xs font-bold text-white">Tabel</span>
+                            </button>
+                        </div>
+
+                        {/* Date Picker: Glassmorphism */}
+                        <div className="glass-panel rounded-2xl px-4 py-3 flex items-center justify-between shrink-0">
+                            <label className="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-2">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-400"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                Pilih Tanggal:
+                            </label>
+                            <input 
+                                type="date" 
+                                value={selectedDate}
+                                onChange={(e) => setSelectedDate(e.target.value)}
+                                className="bg-black/50 border border-white/20 rounded-xl px-3 py-1.5 text-xs sm:text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 w-auto shadow-inner"
+                            />
+                        </div>
+
+                        {/* Kalender Jawa Result: Premium Card */}
+                        <div className="glass-panel rounded-2xl p-4 text-center relative overflow-hidden shrink-0 group border-amber-500/20">
+                            <div className="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all"></div>
+                            <h2 className="text-[10px] sm:text-xs text-amber-200/60 font-bold uppercase tracking-[0.3em] mb-1.5">Penanggalan Jawa</h2>
+                            <div className="text-3xl sm:text-4xl font-black text-white leading-tight mb-1 drop-shadow-lg">
+                                {javaData.hari} <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">{javaData.pasaran}</span>
+                            </div>
+                            <div className="text-xs sm:text-sm font-medium text-slate-300">
+                                {javaData.tanggal} {javaData.bulan} {javaData.tahun}
                             </div>
                         </div>
 
-                        {/* Status Pangkreman */}
-                        <div className={`rounded-2xl p-5 border ${isPangkreman ? 'bg-orange-900/40 border-orange-500' : 'bg-slate-800 border-slate-700'}`}>
-                             <div className="flex items-start space-x-3">
-                                <div className={`p-2 rounded-full ${isPangkreman ? 'bg-orange-500/20 text-orange-400' : 'bg-slate-700 text-slate-400'}`}>
-                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        {/* Alert Bangas & Pangkreman: Flex-1 Modern Panels */}
+                        <div className="flex-1 flex flex-col gap-3 min-h-0">
+                            {/* Status Bangas */}
+                            <div className={`flex-1 rounded-2xl p-3 sm:p-4 border backdrop-blur-md flex items-center gap-4 overflow-hidden shadow-lg transition-all ${bangasData.isBangas ? 'bg-gradient-to-r from-red-900/60 to-red-800/20 border-red-500/50' : 'bg-gradient-to-r from-emerald-900/40 to-emerald-800/10 border-emerald-500/30'}`}>
+                                <div className={`shrink-0 p-2.5 sm:p-3 rounded-2xl shadow-inner ${bangasData.isBangas ? 'bg-red-500/30 text-red-300' : 'bg-emerald-500/30 text-emerald-300'}`}>
+                                    {bangasData.isBangas ? (
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                    ) : (
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                    )}
                                 </div>
-                                <div>
-                                    <h3 className={`font-bold text-lg ${isPangkreman ? 'text-orange-400' : 'text-slate-200'}`}>
+                                <div className="min-w-0">
+                                    <h3 className={`font-bold text-sm sm:text-base leading-tight ${bangasData.isBangas ? 'text-red-300' : 'text-emerald-300'}`}>
+                                        Status Dino Bangas
+                                    </h3>
+                                    <p className="text-white/80 text-[11px] sm:text-xs mt-1 truncate whitespace-normal line-clamp-2 leading-snug">{bangasData.desc}</p>
+                                </div>
+                            </div>
+
+                            {/* Status Pangkreman */}
+                            <div className={`flex-1 rounded-2xl p-3 sm:p-4 border backdrop-blur-md flex items-center gap-4 overflow-hidden shadow-lg transition-all ${isPangkreman ? 'bg-gradient-to-r from-orange-900/60 to-orange-800/20 border-orange-500/50' : 'bg-white/5 border-white/10'}`}>
+                                 <div className={`shrink-0 p-2.5 sm:p-3 rounded-2xl shadow-inner ${isPangkreman ? 'bg-orange-500/30 text-orange-300' : 'bg-white/10 text-slate-300'}`}>
+                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                 </div>
+                                 <div className="min-w-0">
+                                    <h3 className={`font-bold text-sm sm:text-base leading-tight ${isPangkreman ? 'text-orange-300' : 'text-slate-200'}`}>
                                         Status Pangkreman
                                     </h3>
-                                    <p className="text-slate-300 text-sm mt-1">
+                                    <p className="text-white/70 text-[11px] sm:text-xs mt-1 truncate whitespace-normal line-clamp-2 leading-snug">
                                         {isPangkreman 
-                                            ? `Hari ini adalah hari PANGKREMAN! (Pasaran 1 Suro tahun ini jatuh pada pasaran ${pangkremanPasaran})` 
-                                            : `Aman dari Pangkreman. (Pasaran 1 Suro tahun ini jatuh pada ${pangkremanPasaran || '...'})`}
+                                            ? `Awas Pangkreman! (1 Suro = ${pangkremanPasaran})` 
+                                            : `Aman. (1 Suro = ${pangkremanPasaran || '...'})`}
                                     </p>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Rekomendasi Baju */}
-                    <div className="card-gradient rounded-2xl p-6 border border-slate-700">
-                        <h3 className="text-center font-bold text-slate-300 mb-6 flex items-center justify-center space-x-2">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>
-                            <span>Saran Penampilan (Pasaran {javaData.pasaran})</span>
-                        </h3>
-                        
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className={`p-4 rounded-xl border flex flex-col items-center justify-center ${rekomendasi.bg} ${rekomendasi.border}`}>
-                                <span className="text-xs font-semibold opacity-80 mb-1 uppercase tracking-wider">Warna Baju</span>
-                                <span className="text-xl font-black">{rekomendasi.warna}</span>
-                            </div>
-                            <div className="p-4 rounded-xl border border-slate-600 bg-slate-800 flex flex-col items-center justify-center text-slate-200">
-                                <span className="text-xs text-slate-400 font-semibold mb-1 uppercase tracking-wider">Tempat / Arah</span>
-                                <span className="text-xl font-black">{rekomendasi.arah}</span>
+                        {/* Rekomendasi Baju: Floating Glass Bottom */}
+                        <div className="glass-panel rounded-2xl p-3 sm:p-4 shrink-0 shadow-xl relative overflow-hidden mt-1 border-white/20 bg-white/5">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                            <h3 className="text-center font-bold text-white mb-3 flex items-center justify-center gap-1.5 text-xs sm:text-sm">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-400"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>
+                                <span>Saran Pakaian (Pasaran {javaData.pasaran})</span>
+                            </h3>
+                            
+                            <div className="grid grid-cols-2 gap-3 relative z-10">
+                                <div className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all ${rekomendasi.bg} ${rekomendasi.border}`}>
+                                    <span className="text-[10px] font-bold opacity-80 uppercase tracking-widest mb-1">Warna Baju</span>
+                                    <span className="text-lg sm:text-xl font-black leading-none drop-shadow-sm">{rekomendasi.warna}</span>
+                                </div>
+                                <div className="p-3 rounded-xl border border-white/20 bg-black/60 flex flex-col items-center justify-center text-slate-200 shadow-inner">
+                                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Arah Menuju</span>
+                                    <span className="text-lg sm:text-xl font-black leading-none text-white">{rekomendasi.arah}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    {/* Modal Popup: Tabel Bangas */}
+                    {showModal && (
+                        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 modal-overlay bg-black/80 backdrop-blur-sm">
+                            <div className="glass-panel w-full max-w-[90%] sm:max-w-sm rounded-3xl p-5 sm:p-6 modal-content relative flex flex-col border border-amber-500/30 shadow-[0_0_40px_rgba(245,158,11,0.2)] bg-[#1e1b4b]/90">
+                                <button 
+                                    onClick={() => setShowModal(false)} 
+                                    className="absolute top-4 right-4 text-slate-400 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors"
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                </button>
+                                
+                                <div className="flex items-center gap-3 mb-5">
+                                    <div className="p-2 bg-amber-500/20 rounded-xl text-amber-400 shadow-inner border border-amber-500/30">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+                                    </div>
+                                    <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">Tabel Dino Bangas</h2>
+                                </div>
+                                
+                                <div className="overflow-hidden rounded-xl border border-white/10 bg-black/50 shadow-inner">
+                                    <table className="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr className="border-b border-white/10 bg-white/10 text-[10px] sm:text-xs font-bold text-amber-300 uppercase tracking-wider">
+                                                <th className="py-3 px-3">Bulan Jawa</th>
+                                                <th className="py-3 px-3">Hari & Pasaran</th>
+                                                <th className="py-3 px-3">Arah</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="text-[11px] sm:text-xs text-slate-200 divide-y divide-white/10 font-medium">
+                                            {TABLE_BANGAS_DATA.map((row) => (
+                                                <tr key={row.id} className="hover:bg-white/5 transition-colors">
+                                                    <td className="py-2.5 px-3 leading-snug">{row.bulan}</td>
+                                                    <td className="py-2.5 px-3 text-orange-300 leading-snug">{row.hari}</td>
+                                                    <td className="py-2.5 px-3 text-amber-400 font-bold">{row.arah}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <p className="text-center text-[10px] text-amber-200/50 mt-4 font-medium">
+                                    *Pengecekan di sistem aplikasi sudah diotomatisasi merujuk pada tabel ini.
+                                </p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         };
