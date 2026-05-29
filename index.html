@@ -1,380 +1,77 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Pengecekan Hari Baik</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="haribaik.png">
-    
-    <!-- Google Fonts: Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100dvh; /* Tinggi pas 1 layar HP otomatis */
-            overflow: hidden; /* Menghilangkan fungsi scroll di body utama */
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #020617 100%); /* Background gradient premium */
-            color: #f8fafc;
-            font-family: 'Poppins', sans-serif;
-        }
-        #root {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            position: relative;
-        }
-        
-        /* Modern Glassmorphism UI */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.05); /* Sedikit lebih terang */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
-        }
-        .gradient-text {
-            background: linear-gradient(to right, #fbbf24, #f59e0b, #ea580c); /* Nuansa Emas/Gold yang identik dengan Primbon */
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-        }
-        
-        /* Modal Animations */
-        .modal-overlay {
-            animation: fadeIn 0.2s ease-out forwards;
-        }
-        .modal-content {
-            animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; backdrop-filter: blur(0px); }
-            to { opacity: 1; backdrop-filter: blur(8px); }
-        }
-        @keyframes scaleUp {
-            from { transform: scale(0.95) translateY(10px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Primbon Bangas & Cek Weton</title>
+<link rel="icon" type="image/png" href="haribaik.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+html,body{margin:0;padding:0;height:100dvh;overflow:hidden;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#020617 100%);color:#f8fafc;font-family:Poppins,sans-serif}#root{height:100%;width:100%;display:flex;justify-content:center}.glass-panel{background:rgba(255,255,255,.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.15);box-shadow:0 8px 32px rgba(0,0,0,.25)}.gradient-text{background:linear-gradient(to right,#fbbf24,#f59e0b,#ea580c);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}.modal-overlay{animation:fadeIn .2s ease-out}.modal-content{animation:scaleUp .25s ease-out}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes scaleUp{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+</style>
 </head>
 <body>
-    <div id="root"></div>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect}=React;
+const PASARAN=['Legi','Pahing','Pon','Wage','Kliwon'];
+const HARI=['Minggu','Senin','Selasa','Rabu','Kamis',"Jum'at",'Sabtu'];
+const BULAN_JAWA=['Suro','Sapar','Mulud',"Ba\'da Mulud",'Jumadil Awal','Jumadil Akhir','Rejeb','Ruwah','Poso','Sawal','Selo','Besar'];
+const NEPTU_HARI={'Minggu':5,'Senin':4,'Selasa':3,'Rabu':7,'Kamis':8,"Jum'at":6,'Sabtu':9};
+const NEPTU_PASARAN={'Legi':5,'Pahing':9,'Pon':7,'Wage':4,'Kliwon':8};
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+const todayLocal=()=>{const n=new Date();return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`};
+const parseLocalDate=(s)=>{if(!s||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;const [y,m,d]=s.split('-').map(Number);const dt=new Date(y,m-1,d,12,0,0);if(Number.isNaN(dt.getTime()))return null;if(dt.getFullYear()!==y||dt.getMonth()!==m-1||dt.getDate()!==d)return null;return dt;};
 
-        // Constants
-        const PASARAN_ARRAY = ['Legi', 'Pahing', 'Pon', 'Wage', 'Kliwon'];
-        const HARI_ARRAY = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum\'at', 'Sabtu'];
-        const BULAN_JAWA = [
-            'Suro', 'Sapar', 'Mulud', "Ba'da Mulud",
-            'Jumadil Awal', 'Jumadil Akhir', 'Rejeb', 'Ruwah',
-            'Poso', 'Sawal', 'Selo', 'Besar'
-        ];
-
-        // --- Core Logic Functions ---
-
-        // Fungsi untuk mendapatkan detail penanggalan Jawa (Aproksimasi via kalender Hijriah)
-        const getJavaneseDetails = (dateObj) => {
-            // Epoch 1 Jan 1970 adalah Kamis Wage (Wage = index 3)
-            const d1 = new Date(1970, 0, 1, 12, 0, 0); 
-            const d2 = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), 12, 0, 0);
-            const diffDays = Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
-
-            let pasaranIndex = (3 + (diffDays % 5)) % 5;
-            if (pasaranIndex < 0) pasaranIndex += 5;
-
-            let dayIndex = dateObj.getDay();
-
-            // Menggunakan formatter Hijriah untuk aproksimasi bulan dan tahun Jawa
-            const formatter = new Intl.DateTimeFormat('en-US-u-ca-islamic', { month: 'numeric', year: 'numeric', day: 'numeric' });
-            const parts = formatter.formatToParts(dateObj);
-            
-            const monthNum = parseInt(parts.find(p => p.type === 'month')?.value || 1);
-            let yearNumStr = parts.find(p => p.type === 'relatedYear' || p.type === 'year')?.value || "1445";
-            const yearNum = parseInt(yearNumStr.replace(/[^0-9]/g, ''));
-            const dayNum = parseInt(parts.find(p => p.type === 'day')?.value || 1);
-
-            return {
-                hari: HARI_ARRAY[dayIndex],
-                pasaran: PASARAN_ARRAY[pasaranIndex],
-                tanggal: dayNum,
-                bulan: BULAN_JAWA[monthNum - 1],
-                tahun: yearNum
-            };
-        };
-
-        // Fungsi mencari Pasaran pada 1 Suro tahun ini (untuk cek Pangkreman)
-        const getPangkremanPasaran = (currentDate) => {
-            let tempDate = new Date(currentDate.getTime());
-            // Mundur maksimal 360 hari untuk mencari 1 Suro (1 Muharram)
-            for(let i = 0; i < 360; i++) {
-                const formatter = new Intl.DateTimeFormat('en-US-u-ca-islamic', { month: 'numeric', day: 'numeric' });
-                const parts = formatter.formatToParts(tempDate);
-                const month = parseInt(parts.find(p => p.type === 'month')?.value);
-                const day = parseInt(parts.find(p => p.type === 'day')?.value);
-
-                if (month === 1 && day === 1) {
-                    const detail = getJavaneseDetails(tempDate);
-                    return detail.pasaran;
-                }
-                tempDate.setDate(tempDate.getDate() - 1);
-            }
-            return null; // Fallback jika tidak ketemu
-        };
-
-        // Fungsi cek Dino Bangas berdasarkan gambar
-        const checkBangas = (bulan, hari, pasaran) => {
-            const combined = `${hari} ${pasaran}`.toUpperCase();
-            
-            const rules = [
-                { bulan: ['Suro', 'Sapar', 'Mulud'], hari: ['SABTU LEGI', 'MINGGU LEGI'], arah: 'WETAN' },
-                { bulan: ["Ba'da Mulud", 'Jumadil Awal', 'Jumadil Akhir'], hari: ['SENIN PAHING', 'SELASA PAHING'], arah: 'KIDUL' },
-                { bulan: ['Rejeb', 'Ruwah', 'Poso'], hari: ['RABU PON', 'KAMIS PON'], arah: 'KULON' },
-                { bulan: ['Sawal', 'Selo', 'Besar'], hari: ["JUM'AT WAGE", 'JUMAT WAGE'], arah: 'LOR' }
-            ];
-
-            for (let rule of rules) {
-                if (rule.bulan.includes(bulan) && rule.hari.includes(combined)) {
-                    return { isBangas: true, arah: rule.arah, desc: `Hari ini adalah Dino Bangas! Arah nogo tahun di ${rule.arah}.` };
-                }
-            }
-            return { isBangas: false, arah: null, desc: 'Bukan Dino Bangas. Hari ini aman.' };
-        };
-
-        // Fungsi Rekomendasi berdasarkan input teks user
-        const getRekomendasi = (pasaran) => {
-            const data = {
-                'Legi': { warna: 'PUTIH', arah: 'TIMUR', bg: 'bg-white text-slate-900', border: 'border-white shadow-[0_0_15px_rgba(255,255,255,0.4)]' },
-                'Pahing': { warna: 'MERAH', arah: 'SELATAN', bg: 'bg-red-500 text-white', border: 'border-red-400 shadow-[0_0_15px_rgba(239,68,68,0.4)]' },
-                'Pon': { warna: 'KUNING', arah: 'BARAT', bg: 'bg-yellow-400 text-slate-900', border: 'border-yellow-300 shadow-[0_0_15px_rgba(250,204,21,0.4)]' },
-                'Wage': { warna: 'HITAM', arah: 'UTARA', bg: 'bg-neutral-900 text-white', border: 'border-neutral-600 shadow-[0_0_15px_rgba(0,0,0,0.5)]' },
-                'Kliwon': { warna: 'NETRAL / BEBAS', arah: 'TENGAH', bg: 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white', border: 'border-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.4)]' }
-            };
-            return data[pasaran] || data['Kliwon'];
-        };
-
-        // Data Tabel Bangas (Berdasarkan Gambar)
-        const TABLE_BANGAS_DATA = [
-            { id: 1, bulan: 'Suro, Sapar, Mulud', hari: 'Sabtu/Minggu Legi', arah: 'Wetan (Timur)' },
-            { id: 2, bulan: "Ba'da Mulud, Jum.Awal, Jum.Akhir", hari: 'Senin/Selasa Pahing', arah: 'Kidul (Selatan)' },
-            { id: 3, bulan: 'Rejeb, Ruwah, Poso', hari: 'Rabu/Kamis Pon', arah: 'Kulon (Barat)' },
-            { id: 4, bulan: 'Sawal, Selo, Besar', hari: "Jum'at Wage", arah: 'Lor (Utara)' },
-        ];
-
-        // --- Main Component ---
-        const App = () => {
-            const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-            const [javaData, setJavaData] = useState(null);
-            const [bangasData, setBangasData] = useState(null);
-            const [pangkremanPasaran, setPangkremanPasaran] = useState(null);
-            const [isPangkreman, setIsPangkreman] = useState(false);
-            const [rekomendasi, setRekomendasi] = useState(null);
-            
-            // State untuk memunculkan tabel menu
-            const [showModal, setShowModal] = useState(false);
-
-            useEffect(() => {
-                const dateObj = new Date(selectedDate);
-                
-                // 1. Get Javanese Details
-                const details = getJavaneseDetails(dateObj);
-                setJavaData(details);
-
-                // 2. Check Bangas
-                const bangas = checkBangas(details.bulan, details.hari, details.pasaran);
-                setBangasData(bangas);
-
-                // 3. Check Pangkreman
-                const pangkrem = getPangkremanPasaran(dateObj);
-                setPangkremanPasaran(pangkrem);
-                setIsPangkreman(details.pasaran === pangkrem);
-
-                // 4. Get Recommendation
-                setRekomendasi(getRekomendasi(details.pasaran));
-
-            }, [selectedDate]);
-
-            if (!javaData || !rekomendasi) return <div className="text-center mt-20 text-white font-bold">Memuat perhitungan...</div>;
-
-            return (
-                <div className="w-full max-w-md h-full flex flex-col relative text-slate-200 overflow-hidden">
-                    {/* Modern Background Blur Effects */}
-                    <div className="absolute top-[-10%] left-[-20%] w-[60%] h-[40%] bg-amber-600/20 blur-[100px] rounded-full pointer-events-none"></div>
-                    <div className="absolute bottom-[-10%] right-[-20%] w-[60%] h-[40%] bg-indigo-600/20 blur-[100px] rounded-full pointer-events-none"></div>
-
-                    <div className="flex-1 flex flex-col p-3 sm:p-4 gap-3 z-10">
-                        
-                        {/* Header: Modern UI + Tombol Menu Tabel */}
-                        <div className="flex items-center justify-between shrink-0 mt-1 mb-1">
-                            <div className="flex items-center gap-3">
-                                <img src="haribaik.png" alt="Logo" className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl shadow-[0_0_15px_rgba(251,191,36,0.3)] border border-amber-500/30 bg-black/40 p-0.5" />
-                                <div className="text-left">
-                                    <h1 className="text-xl sm:text-2xl font-black tracking-tight gradient-text leading-none drop-shadow-md">Primbon</h1>
-                                    <p className="text-amber-200/70 text-[10px] sm:text-xs mt-1.5 leading-tight font-medium tracking-wide">UPDATE OTOMATIS AKURAT DAN TERPERCAYA</p>
-                                </div>
-                            </div>
-                            <button 
-                                onClick={() => setShowModal(true)}
-                                className="p-2 sm:px-3 sm:py-2 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all shadow-lg flex items-center gap-2 backdrop-blur-md"
-                                title="Lihat Tabel Bangas"
-                            >
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-400"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
-                                <span className="hidden sm:inline text-xs font-bold text-white">Tabel</span>
-                            </button>
-                        </div>
-
-                        {/* Date Picker: Glassmorphism */}
-                        <div className="glass-panel rounded-2xl px-4 py-3 flex items-center justify-between shrink-0">
-                            <label className="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-2">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-400"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                Pilih Tanggal:
-                            </label>
-                            <input 
-                                type="date" 
-                                value={selectedDate}
-                                onChange={(e) => setSelectedDate(e.target.value)}
-                                className="bg-black/50 border border-white/20 rounded-xl px-3 py-1.5 text-xs sm:text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 w-auto shadow-inner"
-                            />
-                        </div>
-
-                        {/* Kalender Jawa Result: Premium Card */}
-                        <div className="glass-panel rounded-2xl p-4 text-center relative overflow-hidden shrink-0 group border-amber-500/20">
-                            <div className="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all"></div>
-                            <h2 className="text-[10px] sm:text-xs text-amber-200/60 font-bold uppercase tracking-[0.3em] mb-1.5">Penanggalan Jawa</h2>
-                            <div className="text-3xl sm:text-4xl font-black text-white leading-tight mb-1 drop-shadow-lg">
-                                {javaData.hari} <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">{javaData.pasaran}</span>
-                            </div>
-                            <div className="text-xs sm:text-sm font-medium text-slate-300">
-                                {javaData.tanggal} {javaData.bulan} {javaData.tahun}
-                            </div>
-                        </div>
-
-                        {/* Alert Bangas & Pangkreman: Flex-1 Modern Panels */}
-                        <div className="flex-1 flex flex-col gap-3 min-h-0">
-                            {/* Status Bangas */}
-                            <div className={`flex-1 rounded-2xl p-3 sm:p-4 border backdrop-blur-md flex items-center gap-4 overflow-hidden shadow-lg transition-all ${bangasData.isBangas ? 'bg-gradient-to-r from-red-900/60 to-red-800/20 border-red-500/50' : 'bg-gradient-to-r from-emerald-900/40 to-emerald-800/10 border-emerald-500/30'}`}>
-                                <div className={`shrink-0 p-2.5 sm:p-3 rounded-2xl shadow-inner ${bangasData.isBangas ? 'bg-red-500/30 text-red-300' : 'bg-emerald-500/30 text-emerald-300'}`}>
-                                    {bangasData.isBangas ? (
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                                    ) : (
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                                    )}
-                                </div>
-                                <div className="min-w-0">
-                                    <h3 className={`font-bold text-sm sm:text-base leading-tight ${bangasData.isBangas ? 'text-red-300' : 'text-emerald-300'}`}>
-                                        Status Dino Bangas
-                                    </h3>
-                                    <p className="text-white/80 text-[11px] sm:text-xs mt-1 truncate whitespace-normal line-clamp-2 leading-snug">{bangasData.desc}</p>
-                                </div>
-                            </div>
-
-                            {/* Status Pangkreman */}
-                            <div className={`flex-1 rounded-2xl p-3 sm:p-4 border backdrop-blur-md flex items-center gap-4 overflow-hidden shadow-lg transition-all ${isPangkreman ? 'bg-gradient-to-r from-orange-900/60 to-orange-800/20 border-orange-500/50' : 'bg-white/5 border-white/10'}`}>
-                                 <div className={`shrink-0 p-2.5 sm:p-3 rounded-2xl shadow-inner ${isPangkreman ? 'bg-orange-500/30 text-orange-300' : 'bg-white/10 text-slate-300'}`}>
-                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                                 </div>
-                                 <div className="min-w-0">
-                                    <h3 className={`font-bold text-sm sm:text-base leading-tight ${isPangkreman ? 'text-orange-300' : 'text-slate-200'}`}>
-                                        Status Pangkreman
-                                    </h3>
-                                    <p className="text-white/70 text-[11px] sm:text-xs mt-1 truncate whitespace-normal line-clamp-2 leading-snug">
-                                        {isPangkreman 
-                                            ? `Awas Pangkreman! (1 Suro = ${pangkremanPasaran})` 
-                                            : `Aman. (1 Suro = ${pangkremanPasaran || '...'})`}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Rekomendasi Baju: Floating Glass Bottom */}
-                        <div className="glass-panel rounded-2xl p-3 sm:p-4 shrink-0 shadow-xl relative overflow-hidden mt-1 border-white/20 bg-white/5">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                            <h3 className="text-center font-bold text-white mb-3 flex items-center justify-center gap-1.5 text-xs sm:text-sm">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-400"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>
-                                <span>Saran Pakaian (Pasaran {javaData.pasaran})</span>
-                            </h3>
-                            
-                            <div className="grid grid-cols-2 gap-3 relative z-10">
-                                <div className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all ${rekomendasi.bg} ${rekomendasi.border}`}>
-                                    <span className="text-[10px] font-bold opacity-80 uppercase tracking-widest mb-1">Warna Baju</span>
-                                    <span className="text-lg sm:text-xl font-black leading-none drop-shadow-sm">{rekomendasi.warna}</span>
-                                </div>
-                                <div className="p-3 rounded-xl border border-white/20 bg-black/60 flex flex-col items-center justify-center text-slate-200 shadow-inner">
-                                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Arah Menuju</span>
-                                    <span className="text-lg sm:text-xl font-black leading-none text-white">{rekomendasi.arah}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Modal Popup: Tabel Bangas */}
-                    {showModal && (
-                        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 modal-overlay bg-black/80 backdrop-blur-sm">
-                            <div className="glass-panel w-full max-w-[90%] sm:max-w-sm rounded-3xl p-5 sm:p-6 modal-content relative flex flex-col border border-amber-500/30 shadow-[0_0_40px_rgba(245,158,11,0.2)] bg-[#1e1b4b]/90">
-                                <button 
-                                    onClick={() => setShowModal(false)} 
-                                    className="absolute top-4 right-4 text-slate-400 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors"
-                                >
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                                </button>
-                                
-                                <div className="flex items-center gap-3 mb-5">
-                                    <div className="p-2 bg-amber-500/20 rounded-xl text-amber-400 shadow-inner border border-amber-500/30">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
-                                    </div>
-                                    <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">Tabel Dino Bangas</h2>
-                                </div>
-                                
-                                <div className="overflow-hidden rounded-xl border border-white/10 bg-black/50 shadow-inner">
-                                    <table className="w-full text-left border-collapse">
-                                        <thead>
-                                            <tr className="border-b border-white/10 bg-white/10 text-[10px] sm:text-xs font-bold text-amber-300 uppercase tracking-wider">
-                                                <th className="py-3 px-3">Bulan Jawa</th>
-                                                <th className="py-3 px-3">Hari & Pasaran</th>
-                                                <th className="py-3 px-3">Arah</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="text-[11px] sm:text-xs text-slate-200 divide-y divide-white/10 font-medium">
-                                            {TABLE_BANGAS_DATA.map((row) => (
-                                                <tr key={row.id} className="hover:bg-white/5 transition-colors">
-                                                    <td className="py-2.5 px-3 leading-snug">{row.bulan}</td>
-                                                    <td className="py-2.5 px-3 text-orange-300 leading-snug">{row.hari}</td>
-                                                    <td className="py-2.5 px-3 text-amber-400 font-bold">{row.arah}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                
-                                <p className="text-center text-[10px] text-amber-200/50 mt-4 font-medium">
-                                    *Pengecekan di sistem aplikasi sudah diotomatisasi merujuk pada tabel ini.
-                                </p>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        };
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+const getJavaneseDetails=(dateObj)=>{const d1=new Date(1970,0,1,12,0,0);const d2=new Date(dateObj.getFullYear(),dateObj.getMonth(),dateObj.getDate(),12,0,0);const diff=Math.round((d2-d1)/86400000);let pi=(3+(diff%5))%5;if(pi<0)pi+=5;let parts=[];try{parts=new Intl.DateTimeFormat('en-US-u-ca-islamic',{month:'numeric',year:'numeric',day:'numeric'}).formatToParts(dateObj)}catch(e){};const mn=parseInt(parts.find(p=>p.type==='month')?.value||1);const yn=parseInt((parts.find(p=>p.type==='relatedYear'||p.type==='year')?.value||'1445').replace(/[^0-9]/g,''));const dn=parseInt(parts.find(p=>p.type==='day')?.value||1);return{hari:HARI[dateObj.getDay()],pasaran:PASARAN[pi],tanggal:dn,bulan:BULAN_JAWA[mn-1]||'-',tahun:yn};};
+const getPangkremanPasaran=(currentDate)=>{let t=new Date(currentDate.getTime());for(let i=0;i<360;i++){const parts=new Intl.DateTimeFormat('en-US-u-ca-islamic',{month:'numeric',day:'numeric'}).formatToParts(t);const m=parseInt(parts.find(p=>p.type==='month')?.value);const d=parseInt(parts.find(p=>p.type==='day')?.value);if(m===1&&d===1)return getJavaneseDetails(t).pasaran;t.setDate(t.getDate()-1)}return null;};
+const checkBangas=(bulan,hari,pasaran)=>{const c=`${hari} ${pasaran}`.toUpperCase();const rules=[{bulan:['Suro','Sapar','Mulud'],hari:['SABTU LEGI','MINGGU LEGI'],arah:'WETAN'},{bulan:["Ba\'da Mulud",'Jumadil Awal','Jumadil Akhir'],hari:['SENIN PAHING','SELASA PAHING'],arah:'KIDUL'},{bulan:['Rejeb','Ruwah','Poso'],hari:['RABU PON','KAMIS PON'],arah:'KULON'},{bulan:['Sawal','Selo','Besar'],hari:["JUM'AT WAGE",'JUMAT WAGE'],arah:'LOR'}];for(const r of rules){if(r.bulan.includes(bulan)&&r.hari.includes(c))return{isBangas:true,desc:`Hari ini Dino Bangas! Arah nogo tahun di ${r.arah}.`,arah:r.arah}}return{isBangas:false,desc:'Bukan Dino Bangas. Hari ini aman.',arah:null};};
+const getRekomendasi=(p)=>({'Legi':{warna:'PUTIH',arah:'TIMUR',bg:'bg-white text-slate-900',border:'border-white'},'Pahing':{warna:'MERAH',arah:'SELATAN',bg:'bg-red-500 text-white',border:'border-red-400'},'Pon':{warna:'KUNING',arah:'BARAT',bg:'bg-yellow-400 text-slate-900',border:'border-yellow-300'},'Wage':{warna:'HITAM',arah:'UTARA',bg:'bg-neutral-900 text-white',border:'border-neutral-600'},'Kliwon':{warna:'NETRAL',arah:'TENGAH',bg:'bg-gradient-to-br from-indigo-500 to-purple-600 text-white',border:'border-indigo-400'}}[p]);
+const HARI_TRAITS={'Minggu':['berwibawa, hangat, suka tampil','mudah memimpin','jaga gengsi dan kritik'],'Senin':['lembut, rapi, peka','teliti dan sabar','jangan mudah kepikiran'],'Selasa':['tegas, berani, cepat bergerak','kuat mengambil keputusan','kendalikan emosi'],'Rabu':['cerdas, komunikatif, strategis','pandai bicara dan membaca peluang','jangan plin-plan'],'Kamis':['tenang, bijak, bertanggung jawab','kuat menjaga amanah','jangan terlalu kaku'],"Jum'at":['bersih hati, spiritual, penyayang','mudah dipercaya','jangan memendam beban'],'Sabtu':['kuat, pekerja keras, mandiri','ulet dan tahan banting','kurangi keras kepala']};
+const PAS_TRAITS={'Legi':['supel, manis tutur kata, suka damai','relasi, pelayanan, pendidikan'],'Pahing':['ambisius, percaya diri, energinya besar','dagang, promosi, kepemimpinan'],'Pon':['tenang, berhati-hati, berwibawa','aset, administrasi, strategi'],'Wage':['hemat, cekatan, realistis','teknis, operasional, usaha kecil'],'Kliwon':['mendalam, intuisi tajam, kuat batin','kreativitas, seni, konsultasi']};
+const pancasuda=(n)=>({1:['Sri','rezeki dan keberuntungan'],2:['Lungguh','kedudukan dan kehormatan'],3:['Gedhong','kecukupan dan simpanan'],4:['Lara','ujian batin dan kepekaan'],0:['Pati','transformasi dan perlu kehati-hatian']}[n%5]);
+const kategori=(n)=>n<=9?'Lembut & Adaptif':n<=13?'Seimbang & Produktif':n<=16?'Kuat & Berpengaruh':'Tinggi & Intens';
+const wetonProfile=(dt)=>{const d=getJavaneseDetails(dt),nh=NEPTU_HARI[d.hari],np=NEPTU_PASARAN[d.pasaran],tot=nh+np,ht=HARI_TRAITS[d.hari],pt=PAS_TRAITS[d.pasaran],pc=pancasuda(tot);return{...d,nh,np,tot,ht,pt,pc,kat:kategori(tot),rek:getRekomendasi(d.pasaran)}};
+const TABLE=[['Suro, Sapar, Mulud','Sabtu/Minggu Legi','Wetan'],["Ba\'da Mulud, Jum.Awal, Jum.Akhir",'Senin/Selasa Pahing','Kidul'],['Rejeb, Ruwah, Poso','Rabu/Kamis Pon','Kulon'],['Sawal, Selo, Besar',"Jum'at Wage",'Lor']];
+const Card=({title,children})=><div className="rounded-2xl p-3 border bg-white/5 border-white/10 shadow-lg"><h4 className="text-[10px] font-black uppercase tracking-[.22em] text-amber-300 mb-1.5">{title}</h4><div className="text-[11px] sm:text-xs text-white/80 leading-relaxed">{children}</div></div>;
+function App(){
+ const [menu,setMenu]=useState('bangas'),[selectedDate,setSelectedDate]=useState(todayLocal()),[birthDate,setBirthDate]=useState('2000-01-01');
+ const [java,setJava]=useState(null),[bangas,setBangas]=useState(null),[pangkrem,setPangkrem]=useState(null),[isP,setIsP]=useState(false),[rek,setRek]=useState(null),[weton,setWeton]=useState(null),[modal,setModal]=useState(false);
+ useEffect(()=>{const dt=parseLocalDate(selectedDate);if(!dt)return;const d=getJavaneseDetails(dt);setJava(d);setBangas(checkBangas(d.bulan,d.hari,d.pasaran));const p=getPangkremanPasaran(dt);setPangkrem(p);setIsP(d.pasaran===p);setRek(getRekomendasi(d.pasaran));},[selectedDate]);
+ useEffect(()=>{const dt=parseLocalDate(birthDate);if(!dt)return;setWeton(wetonProfile(dt));},[birthDate]);
+ if(!java||!bangas||!rek||!weton)return <div className="mt-20 font-bold">Memuat...</div>;
+ return <div className="w-full max-w-md h-full flex flex-col relative overflow-hidden">
+  <div className="absolute top-[-10%] left-[-20%] w-[60%] h-[40%] bg-amber-600/20 blur-[100px] rounded-full"/><div className="absolute bottom-[-10%] right-[-20%] w-[60%] h-[40%] bg-indigo-600/20 blur-[100px] rounded-full"/>
+  <div className="z-10 flex-1 flex flex-col p-3 sm:p-4 gap-3 min-h-0">
+   <div className="flex items-center justify-between shrink-0"><div className="flex items-center gap-3"><img src="haribaik.png" className="w-12 h-12 rounded-2xl border border-amber-500/30 bg-black/40"/><div><h1 className="text-xl sm:text-2xl font-black gradient-text leading-none">Primbon Bangas</h1><p className="text-amber-200/70 text-[10px] mt-1 font-medium tracking-wide">BANGAS • WETON • PRIMBON</p></div></div><button onClick={()=>setModal(true)} className="p-2 rounded-xl bg-white/10 border border-white/20 text-amber-300 font-bold text-xs">Tabel</button></div>
+   <div className="grid grid-cols-2 gap-2 glass-panel rounded-2xl p-1.5 shrink-0"><button onClick={()=>setMenu('bangas')} className={`rounded-xl py-2 text-xs font-black ${menu==='bangas'?'bg-amber-500 text-slate-950':'text-white/70'}`}>Dino Bangas</button><button onClick={()=>setMenu('weton')} className={`rounded-xl py-2 text-xs font-black ${menu==='weton'?'bg-amber-500 text-slate-950':'text-white/70'}`}>Cek Weton</button></div>
+   {menu==='bangas'?<div className="flex-1 flex flex-col gap-3 min-h-0">
+    <div className="glass-panel rounded-2xl px-4 py-3 flex items-center justify-between shrink-0"><label className="text-xs font-semibold">Pilih Tanggal:</label><input type="date" inputMode="numeric" value={selectedDate} onChange={e=>setSelectedDate(e.target.value)} className="bg-black/50 border border-white/20 rounded-xl px-3 py-1.5 text-xs font-semibold text-white"/></div>
+    {!parseLocalDate(selectedDate)&&<div className="rounded-2xl p-3 border border-amber-400/30 bg-amber-500/10 text-amber-100 text-xs">Masukkan tanggal lengkap yang valid.</div>}
+    <div className="glass-panel rounded-2xl p-4 text-center shrink-0"><h2 className="text-[10px] text-amber-200/60 font-bold uppercase tracking-[.3em] mb-1.5">Penanggalan Jawa</h2><div className="text-3xl font-black">{java.hari} <span className="text-amber-400">{java.pasaran}</span></div><div className="text-xs text-slate-300">{java.tanggal} {java.bulan} {java.tahun}</div></div>
+    <div className={`rounded-2xl p-4 border flex gap-4 ${bangas.isBangas?'bg-red-900/50 border-red-500/50':'bg-emerald-900/30 border-emerald-500/30'}`}><div className="font-black text-lg">{bangas.isBangas?'⚠️':'✅'}</div><div><h3 className="font-bold text-sm">Status Dino Bangas</h3><p className="text-xs text-white/75 mt-1">{bangas.desc}</p></div></div>
+    <div className={`rounded-2xl p-4 border flex gap-4 ${isP?'bg-orange-900/50 border-orange-500/50':'bg-white/5 border-white/10'}`}><div className="font-black text-lg">ℹ️</div><div><h3 className="font-bold text-sm">Status Pangkreman</h3><p className="text-xs text-white/75 mt-1">{isP?`Awas Pangkreman! (1 Suro = ${pangkrem})`:`Aman. (1 Suro = ${pangkrem||'...'})`}</p></div></div>
+    <div className="glass-panel rounded-2xl p-3 shrink-0"><h3 className="text-center font-bold text-xs mb-3">Saran Pakaian</h3><div className="grid grid-cols-2 gap-3"><div className={`p-3 rounded-xl border text-center ${rek.bg} ${rek.border}`}><div className="text-[10px] font-bold">Warna</div><div className="text-lg font-black">{rek.warna}</div></div><div className="p-3 rounded-xl border border-white/20 bg-black/60 text-center"><div className="text-[10px] text-slate-400 font-bold">Arah</div><div className="text-lg font-black">{rek.arah}</div></div></div></div>
+   </div>:<div className="flex-1 flex flex-col gap-3 min-h-0 overflow-y-auto no-scrollbar pb-1">
+    <div className="glass-panel rounded-2xl px-4 py-3 flex items-center justify-between shrink-0"><label className="text-xs font-semibold">Tanggal Lahir:</label><input type="date" inputMode="numeric" value={birthDate} onChange={e=>setBirthDate(e.target.value)} className="bg-black/50 border border-white/20 rounded-xl px-3 py-1.5 text-xs font-semibold text-white"/></div>
+    {!parseLocalDate(birthDate)&&<div className="rounded-2xl p-3 border border-amber-400/30 bg-amber-500/10 text-amber-100 text-xs">Masukkan tanggal lahir lengkap yang valid.</div>}
+    <div className="glass-panel rounded-3xl p-4 text-center shrink-0"><h2 className="text-[10px] text-amber-200/60 font-bold uppercase tracking-[.3em] mb-2">Hasil Cek Weton Lahir</h2><div className="text-3xl font-black">{weton.hari} <span className="text-amber-400">{weton.pasaran}</span></div><div className="text-xs text-slate-300 mt-1">{weton.tanggal} {weton.bulan} {weton.tahun}</div><div className="grid grid-cols-3 gap-2 mt-4"><div className="rounded-2xl bg-black/40 border border-white/10 p-2"><div className="text-[9px] text-slate-400 font-bold">Neptu Hari</div><div className="text-xl font-black">{weton.nh}</div></div><div className="rounded-2xl bg-black/40 border border-white/10 p-2"><div className="text-[9px] text-slate-400 font-bold">Pasaran</div><div className="text-xl font-black">{weton.np}</div></div><div className="rounded-2xl bg-amber-500/20 border border-amber-400/30 p-2"><div className="text-[9px] text-amber-200 font-bold">Total</div><div className="text-xl font-black text-amber-300">{weton.tot}</div></div></div></div>
+    <Card title="Sifat & Watak Utama">Weton {weton.hari} {weton.pasaran} menggambarkan pribadi yang {weton.ht[0]}. Pengaruh pasaran {weton.pasaran} menambah sifat {weton.pt[0]}.</Card>
+    <Card title="Kelebihan / Bakat Alami">{weton.ht[1]}. Energi pasaran mendukung rezeki lewat bidang {weton.pt[1]}.</Card>
+    <Card title="Tantangan Yang Perlu Dijaga">{weton.ht[2]}. Kuncinya menjaga keseimbangan, tidak terburu-buru, dan tetap rendah hati.</Card>
+    <div className="grid grid-cols-2 gap-3"><div className="rounded-2xl p-3 border border-amber-400/30 bg-amber-500/10"><h4 className="text-[10px] font-black text-amber-300 uppercase">Naungan</h4><div className="text-xl font-black">{weton.pc[0]}</div><p className="text-[11px] text-white/70">{weton.pc[1]}</p></div><div className="rounded-2xl p-3 border border-indigo-400/30 bg-indigo-500/10"><h4 className="text-[10px] font-black text-indigo-300 uppercase">Kategori</h4><div className="text-sm font-black">{weton.kat}</div><p className="text-[11px] text-white/70">Gunakan energi weton sebagai pengingat diri.</p></div></div>
+    <div className="glass-panel rounded-2xl p-3"><h3 className="text-center font-bold text-xs mb-3">Rekomendasi Primbon Weton</h3><div className="grid grid-cols-2 gap-3"><div className={`p-3 rounded-xl border text-center ${weton.rek.bg} ${weton.rek.border}`}><div className="text-[10px] font-bold">Warna Cocok</div><div className="text-base font-black">{weton.rek.warna}</div></div><div className="p-3 rounded-xl border border-white/20 bg-black/60 text-center"><div className="text-[10px] text-slate-400 font-bold">Arah Energi</div><div className="text-base font-black">{weton.rek.arah}</div></div></div></div>
+    <Card title="Relasi, Rezeki & Saran"><p><b>Relasi:</b> cocok dengan komunikasi terbuka dan saling menghargai.</p><p className="mt-1"><b>Rezeki:</b> bidang {weton.pt[1]}.</p><p className="mt-2 text-amber-200/70 italic">Catatan: tafsir weton adalah warisan budaya/hiburan, bukan keputusan mutlak.</p></Card>
+   </div>}
+  </div>
+  {modal&&<div className="absolute inset-0 z-50 flex items-center justify-center p-4 modal-overlay bg-black/80"><div className="glass-panel w-full max-w-sm rounded-3xl p-5 modal-content bg-[#1e1b4b]/90"><button onClick={()=>setModal(false)} className="float-right bg-white/10 rounded-full px-3 py-1">✕</button><h2 className="text-lg font-bold mb-4">Tabel Dino Bangas</h2><div className="rounded-xl overflow-hidden border border-white/10"><table className="w-full text-left text-xs"><thead className="bg-white/10 text-amber-300"><tr><th className="p-2">Bulan Jawa</th><th className="p-2">Hari</th><th className="p-2">Arah</th></tr></thead><tbody>{TABLE.map((r,i)=><tr key={i} className="border-t border-white/10"><td className="p-2">{r[0]}</td><td className="p-2 text-orange-300">{r[1]}</td><td className="p-2 text-amber-400 font-bold">{r[2]}</td></tr>)}</tbody></table></div></div></div>}
+ </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
 </body>
 </html>
