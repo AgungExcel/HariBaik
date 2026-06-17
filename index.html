@@ -1,77 +1,346 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Primbon Bangas & Cek Weton</title>
-<link rel="icon" type="image/png" href="haribaik.png">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<style>
-html,body{margin:0;padding:0;height:100dvh;overflow:hidden;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#020617 100%);color:#f8fafc;font-family:Poppins,sans-serif}#root{height:100%;width:100%;display:flex;justify-content:center}.glass-panel{background:rgba(255,255,255,.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.15);box-shadow:0 8px 32px rgba(0,0,0,.25)}.gradient-text{background:linear-gradient(to right,#fbbf24,#f59e0b,#ea580c);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}.modal-overlay{animation:fadeIn .2s ease-out}.modal-content{animation:scaleUp .25s ease-out}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes scaleUp{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Primbon Bangas & Cek Weton</title>
+  <link rel="icon" type="image/png" href="haribaik.png" />
+  <style>
+    :root{
+      --bg1:#0f172a;--bg2:#1e1b4b;--bg3:#020617;--text:#f8fafc;--muted:#cbd5e1;
+      --amber:#f59e0b;--amber2:#fbbf24;--white10:rgba(255,255,255,.10);--white15:rgba(255,255,255,.15);
+      --panel:rgba(255,255,255,.06);--shadow:0 8px 32px rgba(0,0,0,.25);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;min-height:100%;background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 50%,var(--bg3) 100%);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;}
+    body{min-height:100dvh;overflow:hidden}
+    button,input{font:inherit}
+    button{cursor:pointer;border:0}
+    #root{height:100dvh;width:100%;display:flex;justify-content:center;overflow:hidden}
+    .app{width:100%;max-width:448px;height:100%;display:flex;flex-direction:column;position:relative;overflow:hidden}
+    .glow-a,.glow-b{position:absolute;width:60%;height:40%;border-radius:999px;filter:blur(100px);pointer-events:none}.glow-a{top:-10%;left:-20%;background:rgba(217,119,6,.22)}.glow-b{bottom:-10%;right:-20%;background:rgba(79,70,229,.22)}
+    .content{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;gap:12px;min-height:0;padding:12px}
+    .glass{background:var(--panel);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--white15);box-shadow:var(--shadow)}
+    .header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}.brand{display:flex;align-items:center;gap:12px;min-width:0}.logo{width:48px;height:48px;border-radius:16px;border:1px solid rgba(245,158,11,.35);background:rgba(0,0,0,.35);object-fit:cover}.title{margin:0;font-size:22px;line-height:1;font-weight:900;background:linear-gradient(to right,#fbbf24,#f59e0b,#ea580c);-webkit-background-clip:text;background-clip:text;color:transparent}.subtitle{margin:5px 0 0;font-size:10px;letter-spacing:.12em;color:rgba(253,230,138,.72);font-weight:700}.small-btn{padding:9px 11px;border-radius:12px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);color:#fcd34d;font-weight:800;font-size:12px}
+    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px;border-radius:18px;flex-shrink:0}.tab{border-radius:14px;padding:10px 8px;background:transparent;color:rgba(255,255,255,.72);font-weight:900;font-size:12px}.tab.active{background:#f59e0b;color:#0f172a}
+    .view{flex:1;display:flex;flex-direction:column;gap:12px;min-height:0}.scroll{overflow:auto;padding-bottom:4px;scrollbar-width:none}.scroll::-webkit-scrollbar{display:none}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:18px;padding:12px 16px;flex-shrink:0}.row label{font-size:12px;font-weight:700}.date-input{background:rgba(0,0,0,.48);border:1px solid rgba(255,255,255,.22);border-radius:13px;padding:8px 10px;color:#fff;font-size:12px;font-weight:700;min-width:142px;color-scheme:dark}.notice{border-radius:18px;padding:12px;border:1px solid rgba(251,191,36,.35);background:rgba(245,158,11,.12);color:#fde68a;font-size:12px}.date-card{border-radius:22px;padding:16px;text-align:center;flex-shrink:0}.overline{font-size:10px;color:rgba(253,230,138,.65);font-weight:900;text-transform:uppercase;letter-spacing:.28em;margin-bottom:7px}.big{font-size:30px;line-height:1.1;font-weight:900}.amber{color:#fbbf24}.muted{font-size:12px;color:#cbd5e1;margin-top:5px}.status{border-radius:20px;padding:15px;border:1px solid rgba(255,255,255,.12);display:flex;gap:14px;align-items:flex-start}.status .emoji{font-size:20px;font-weight:900}.status h3{margin:0;font-size:14px}.status p{margin:5px 0 0;color:rgba(255,255,255,.76);font-size:12px;line-height:1.45}.danger{background:rgba(127,29,29,.52);border-color:rgba(239,68,68,.52)}.safe{background:rgba(6,78,59,.32);border-color:rgba(16,185,129,.35)}.info{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)}.warn{background:rgba(124,45,18,.50);border-color:rgba(249,115,22,.50)}
+    .suggest{border-radius:20px;padding:13px;flex-shrink:0}.suggest h3{margin:0 0 12px;text-align:center;font-size:13px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.pill{border-radius:14px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,.20);background:rgba(0,0,0,.55)}.pill .label,.mini .label{font-size:10px;font-weight:900;color:#94a3b8}.pill .value{font-size:18px;font-weight:900;margin-top:2px}.mini{border-radius:16px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.10);padding:9px;text-align:center}.mini .value{font-size:22px;font-weight:900}.mini.total{background:rgba(245,158,11,.18);border-color:rgba(251,191,36,.32)}.mini.total .label,.mini.total .value{color:#fcd34d}.card{border-radius:18px;padding:13px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);box-shadow:0 8px 20px rgba(0,0,0,.18)}.card h4{margin:0 0 7px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.18em;color:#fcd34d}.card div,.card p{font-size:12px;line-height:1.5;color:rgba(255,255,255,.82);margin:0}.profile-card{border-radius:24px;padding:16px;text-align:center;flex-shrink:0}.box{border-radius:18px;padding:13px}.box h4{margin:0 0 5px;font-size:10px;font-weight:900;text-transform:uppercase}.box .large{font-size:21px;font-weight:900}.box p{font-size:11px;line-height:1.45;color:rgba(255,255,255,.72);margin:2px 0 0}.box.amb{background:rgba(245,158,11,.12);border:1px solid rgba(251,191,36,.35)}.box.ind{background:rgba(99,102,241,.12);border:1px solid rgba(129,140,248,.35)}.white{background:#fff;color:#0f172a;border-color:#fff}.red{background:#ef4444;color:#fff;border-color:#f87171}.yellow{background:#facc15;color:#0f172a;border-color:#fde047}.black{background:#111827;color:#fff;border-color:#525252}.purple{background:linear-gradient(135deg,#6366f1,#9333ea);color:#fff;border-color:#818cf8}.modal{position:absolute;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.80);animation:fadeIn .2s ease-out}.modal.show{display:flex}.modal-box{width:100%;max-width:390px;border-radius:26px;padding:20px;background:rgba(30,27,75,.94);animation:scaleUp .25s ease-out}.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.modal h2{margin:0;font-size:18px}.close{background:rgba(255,255,255,.10);color:#fff;border-radius:999px;padding:7px 12px;font-weight:900}.table-wrap{border:1px solid rgba(255,255,255,.10);border-radius:14px;overflow:hidden}table{width:100%;border-collapse:collapse;text-align:left;font-size:12px}thead{background:rgba(255,255,255,.10);color:#fcd34d}th,td{padding:10px 8px}tbody tr{border-top:1px solid rgba(255,255,255,.10)}td:nth-child(2){color:#fdba74}td:nth-child(3){color:#fbbf24;font-weight:900}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes scaleUp{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}@media (min-width:640px){.content{padding:16px}.title{font-size:25px}.big{font-size:34px}}
+  </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const {useState,useEffect}=React;
-const PASARAN=['Legi','Pahing','Pon','Wage','Kliwon'];
-const HARI=['Minggu','Senin','Selasa','Rabu','Kamis',"Jum'at",'Sabtu'];
-const BULAN_JAWA=['Suro','Sapar','Mulud',"Ba\'da Mulud",'Jumadil Awal','Jumadil Akhir','Rejeb','Ruwah','Poso','Sawal','Selo','Besar'];
-const NEPTU_HARI={'Minggu':5,'Senin':4,'Selasa':3,'Rabu':7,'Kamis':8,"Jum'at":6,'Sabtu':9};
-const NEPTU_PASARAN={'Legi':5,'Pahing':9,'Pon':7,'Wage':4,'Kliwon':8};
+  <div id="root">
+    <main class="app" aria-label="Aplikasi Primbon Bangas dan Cek Weton">
+      <div class="glow-a"></div><div class="glow-b"></div>
+      <section class="content">
+        <header class="header">
+          <div class="brand">
+            <img src="haribaik.png" alt="Logo" class="logo" onerror="this.style.display='none'" />
+            <div>
+              <h1 class="title">Primbon Bangas</h1>
+              <p class="subtitle">BANGAS • WETON • PRIMBON</p>
+            </div>
+          </div>
+          <button id="openTable" class="small-btn" type="button">Tabel</button>
+        </header>
 
-const todayLocal=()=>{const n=new Date();return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`};
-const parseLocalDate=(s)=>{if(!s||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;const [y,m,d]=s.split('-').map(Number);const dt=new Date(y,m-1,d,12,0,0);if(Number.isNaN(dt.getTime()))return null;if(dt.getFullYear()!==y||dt.getMonth()!==m-1||dt.getDate()!==d)return null;return dt;};
+        <nav class="tabs glass" aria-label="Menu utama">
+          <button id="tabBangas" class="tab active" type="button">Dino Bangas</button>
+          <button id="tabWeton" class="tab" type="button">Cek Weton</button>
+        </nav>
 
-const getJavaneseDetails=(dateObj)=>{const d1=new Date(1970,0,1,12,0,0);const d2=new Date(dateObj.getFullYear(),dateObj.getMonth(),dateObj.getDate(),12,0,0);const diff=Math.round((d2-d1)/86400000);let pi=(3+(diff%5))%5;if(pi<0)pi+=5;let parts=[];try{parts=new Intl.DateTimeFormat('en-US-u-ca-islamic',{month:'numeric',year:'numeric',day:'numeric'}).formatToParts(dateObj)}catch(e){};const mn=parseInt(parts.find(p=>p.type==='month')?.value||1);const yn=parseInt((parts.find(p=>p.type==='relatedYear'||p.type==='year')?.value||'1445').replace(/[^0-9]/g,''));const dn=parseInt(parts.find(p=>p.type==='day')?.value||1);return{hari:HARI[dateObj.getDay()],pasaran:PASARAN[pi],tanggal:dn,bulan:BULAN_JAWA[mn-1]||'-',tahun:yn};};
-const getPangkremanPasaran=(currentDate)=>{let t=new Date(currentDate.getTime());for(let i=0;i<360;i++){const parts=new Intl.DateTimeFormat('en-US-u-ca-islamic',{month:'numeric',day:'numeric'}).formatToParts(t);const m=parseInt(parts.find(p=>p.type==='month')?.value);const d=parseInt(parts.find(p=>p.type==='day')?.value);if(m===1&&d===1)return getJavaneseDetails(t).pasaran;t.setDate(t.getDate()-1)}return null;};
-const checkBangas=(bulan,hari,pasaran)=>{const c=`${hari} ${pasaran}`.toUpperCase();const rules=[{bulan:['Suro','Sapar','Mulud'],hari:['SABTU LEGI','MINGGU LEGI'],arah:'WETAN'},{bulan:["Ba\'da Mulud",'Jumadil Awal','Jumadil Akhir'],hari:['SENIN PAHING','SELASA PAHING'],arah:'KIDUL'},{bulan:['Rejeb','Ruwah','Poso'],hari:['RABU PON','KAMIS PON'],arah:'KULON'},{bulan:['Sawal','Selo','Besar'],hari:["JUM'AT WAGE",'JUMAT WAGE'],arah:'LOR'}];for(const r of rules){if(r.bulan.includes(bulan)&&r.hari.includes(c))return{isBangas:true,desc:`Hari ini Dino Bangas! Arah nogo tahun di ${r.arah}.`,arah:r.arah}}return{isBangas:false,desc:'Bukan Dino Bangas. Hari ini aman.',arah:null};};
-const getRekomendasi=(p)=>({'Legi':{warna:'PUTIH',arah:'TIMUR',bg:'bg-white text-slate-900',border:'border-white'},'Pahing':{warna:'MERAH',arah:'SELATAN',bg:'bg-red-500 text-white',border:'border-red-400'},'Pon':{warna:'KUNING',arah:'BARAT',bg:'bg-yellow-400 text-slate-900',border:'border-yellow-300'},'Wage':{warna:'HITAM',arah:'UTARA',bg:'bg-neutral-900 text-white',border:'border-neutral-600'},'Kliwon':{warna:'NETRAL',arah:'TENGAH',bg:'bg-gradient-to-br from-indigo-500 to-purple-600 text-white',border:'border-indigo-400'}}[p]);
-const HARI_TRAITS={'Minggu':['berwibawa, hangat, suka tampil','mudah memimpin','jaga gengsi dan kritik'],'Senin':['lembut, rapi, peka','teliti dan sabar','jangan mudah kepikiran'],'Selasa':['tegas, berani, cepat bergerak','kuat mengambil keputusan','kendalikan emosi'],'Rabu':['cerdas, komunikatif, strategis','pandai bicara dan membaca peluang','jangan plin-plan'],'Kamis':['tenang, bijak, bertanggung jawab','kuat menjaga amanah','jangan terlalu kaku'],"Jum'at":['bersih hati, spiritual, penyayang','mudah dipercaya','jangan memendam beban'],'Sabtu':['kuat, pekerja keras, mandiri','ulet dan tahan banting','kurangi keras kepala']};
-const PAS_TRAITS={'Legi':['supel, manis tutur kata, suka damai','relasi, pelayanan, pendidikan'],'Pahing':['ambisius, percaya diri, energinya besar','dagang, promosi, kepemimpinan'],'Pon':['tenang, berhati-hati, berwibawa','aset, administrasi, strategi'],'Wage':['hemat, cekatan, realistis','teknis, operasional, usaha kecil'],'Kliwon':['mendalam, intuisi tajam, kuat batin','kreativitas, seni, konsultasi']};
-const pancasuda=(n)=>({1:['Sri','rezeki dan keberuntungan'],2:['Lungguh','kedudukan dan kehormatan'],3:['Gedhong','kecukupan dan simpanan'],4:['Lara','ujian batin dan kepekaan'],0:['Pati','transformasi dan perlu kehati-hatian']}[n%5]);
-const kategori=(n)=>n<=9?'Lembut & Adaptif':n<=13?'Seimbang & Produktif':n<=16?'Kuat & Berpengaruh':'Tinggi & Intens';
-const wetonProfile=(dt)=>{const d=getJavaneseDetails(dt),nh=NEPTU_HARI[d.hari],np=NEPTU_PASARAN[d.pasaran],tot=nh+np,ht=HARI_TRAITS[d.hari],pt=PAS_TRAITS[d.pasaran],pc=pancasuda(tot);return{...d,nh,np,tot,ht,pt,pc,kat:kategori(tot),rek:getRekomendasi(d.pasaran)}};
-const TABLE=[['Suro, Sapar, Mulud','Sabtu/Minggu Legi','Wetan'],["Ba\'da Mulud, Jum.Awal, Jum.Akhir",'Senin/Selasa Pahing','Kidul'],['Rejeb, Ruwah, Poso','Rabu/Kamis Pon','Kulon'],['Sawal, Selo, Besar',"Jum'at Wage",'Lor']];
-const Card=({title,children})=><div className="rounded-2xl p-3 border bg-white/5 border-white/10 shadow-lg"><h4 className="text-[10px] font-black uppercase tracking-[.22em] text-amber-300 mb-1.5">{title}</h4><div className="text-[11px] sm:text-xs text-white/80 leading-relaxed">{children}</div></div>;
-function App(){
- const [menu,setMenu]=useState('bangas'),[selectedDate,setSelectedDate]=useState(todayLocal()),[birthDate,setBirthDate]=useState('2000-01-01');
- const [java,setJava]=useState(null),[bangas,setBangas]=useState(null),[pangkrem,setPangkrem]=useState(null),[isP,setIsP]=useState(false),[rek,setRek]=useState(null),[weton,setWeton]=useState(null),[modal,setModal]=useState(false);
- useEffect(()=>{const dt=parseLocalDate(selectedDate);if(!dt)return;const d=getJavaneseDetails(dt);setJava(d);setBangas(checkBangas(d.bulan,d.hari,d.pasaran));const p=getPangkremanPasaran(dt);setPangkrem(p);setIsP(d.pasaran===p);setRek(getRekomendasi(d.pasaran));},[selectedDate]);
- useEffect(()=>{const dt=parseLocalDate(birthDate);if(!dt)return;setWeton(wetonProfile(dt));},[birthDate]);
- if(!java||!bangas||!rek||!weton)return <div className="mt-20 font-bold">Memuat...</div>;
- return <div className="w-full max-w-md h-full flex flex-col relative overflow-hidden">
-  <div className="absolute top-[-10%] left-[-20%] w-[60%] h-[40%] bg-amber-600/20 blur-[100px] rounded-full"/><div className="absolute bottom-[-10%] right-[-20%] w-[60%] h-[40%] bg-indigo-600/20 blur-[100px] rounded-full"/>
-  <div className="z-10 flex-1 flex flex-col p-3 sm:p-4 gap-3 min-h-0">
-   <div className="flex items-center justify-between shrink-0"><div className="flex items-center gap-3"><img src="haribaik.png" className="w-12 h-12 rounded-2xl border border-amber-500/30 bg-black/40"/><div><h1 className="text-xl sm:text-2xl font-black gradient-text leading-none">Primbon Bangas</h1><p className="text-amber-200/70 text-[10px] mt-1 font-medium tracking-wide">BANGAS • WETON • PRIMBON</p></div></div><button onClick={()=>setModal(true)} className="p-2 rounded-xl bg-white/10 border border-white/20 text-amber-300 font-bold text-xs">Tabel</button></div>
-   <div className="grid grid-cols-2 gap-2 glass-panel rounded-2xl p-1.5 shrink-0"><button onClick={()=>setMenu('bangas')} className={`rounded-xl py-2 text-xs font-black ${menu==='bangas'?'bg-amber-500 text-slate-950':'text-white/70'}`}>Dino Bangas</button><button onClick={()=>setMenu('weton')} className={`rounded-xl py-2 text-xs font-black ${menu==='weton'?'bg-amber-500 text-slate-950':'text-white/70'}`}>Cek Weton</button></div>
-   {menu==='bangas'?<div className="flex-1 flex flex-col gap-3 min-h-0">
-    <div className="glass-panel rounded-2xl px-4 py-3 flex items-center justify-between shrink-0"><label className="text-xs font-semibold">Pilih Tanggal:</label><input type="date" inputMode="numeric" value={selectedDate} onChange={e=>setSelectedDate(e.target.value)} className="bg-black/50 border border-white/20 rounded-xl px-3 py-1.5 text-xs font-semibold text-white"/></div>
-    {!parseLocalDate(selectedDate)&&<div className="rounded-2xl p-3 border border-amber-400/30 bg-amber-500/10 text-amber-100 text-xs">Masukkan tanggal lengkap yang valid.</div>}
-    <div className="glass-panel rounded-2xl p-4 text-center shrink-0"><h2 className="text-[10px] text-amber-200/60 font-bold uppercase tracking-[.3em] mb-1.5">Penanggalan Jawa</h2><div className="text-3xl font-black">{java.hari} <span className="text-amber-400">{java.pasaran}</span></div><div className="text-xs text-slate-300">{java.tanggal} {java.bulan} {java.tahun}</div></div>
-    <div className={`rounded-2xl p-4 border flex gap-4 ${bangas.isBangas?'bg-red-900/50 border-red-500/50':'bg-emerald-900/30 border-emerald-500/30'}`}><div className="font-black text-lg">{bangas.isBangas?'⚠️':'✅'}</div><div><h3 className="font-bold text-sm">Status Dino Bangas</h3><p className="text-xs text-white/75 mt-1">{bangas.desc}</p></div></div>
-    <div className={`rounded-2xl p-4 border flex gap-4 ${isP?'bg-orange-900/50 border-orange-500/50':'bg-white/5 border-white/10'}`}><div className="font-black text-lg">ℹ️</div><div><h3 className="font-bold text-sm">Status Pangkreman</h3><p className="text-xs text-white/75 mt-1">{isP?`Awas Pangkreman! (1 Suro = ${pangkrem})`:`Aman. (1 Suro = ${pangkrem||'...'})`}</p></div></div>
-    <div className="glass-panel rounded-2xl p-3 shrink-0"><h3 className="text-center font-bold text-xs mb-3">Saran Pakaian</h3><div className="grid grid-cols-2 gap-3"><div className={`p-3 rounded-xl border text-center ${rek.bg} ${rek.border}`}><div className="text-[10px] font-bold">Warna</div><div className="text-lg font-black">{rek.warna}</div></div><div className="p-3 rounded-xl border border-white/20 bg-black/60 text-center"><div className="text-[10px] text-slate-400 font-bold">Arah</div><div className="text-lg font-black">{rek.arah}</div></div></div></div>
-   </div>:<div className="flex-1 flex flex-col gap-3 min-h-0 overflow-y-auto no-scrollbar pb-1">
-    <div className="glass-panel rounded-2xl px-4 py-3 flex items-center justify-between shrink-0"><label className="text-xs font-semibold">Tanggal Lahir:</label><input type="date" inputMode="numeric" value={birthDate} onChange={e=>setBirthDate(e.target.value)} className="bg-black/50 border border-white/20 rounded-xl px-3 py-1.5 text-xs font-semibold text-white"/></div>
-    {!parseLocalDate(birthDate)&&<div className="rounded-2xl p-3 border border-amber-400/30 bg-amber-500/10 text-amber-100 text-xs">Masukkan tanggal lahir lengkap yang valid.</div>}
-    <div className="glass-panel rounded-3xl p-4 text-center shrink-0"><h2 className="text-[10px] text-amber-200/60 font-bold uppercase tracking-[.3em] mb-2">Hasil Cek Weton Lahir</h2><div className="text-3xl font-black">{weton.hari} <span className="text-amber-400">{weton.pasaran}</span></div><div className="text-xs text-slate-300 mt-1">{weton.tanggal} {weton.bulan} {weton.tahun}</div><div className="grid grid-cols-3 gap-2 mt-4"><div className="rounded-2xl bg-black/40 border border-white/10 p-2"><div className="text-[9px] text-slate-400 font-bold">Neptu Hari</div><div className="text-xl font-black">{weton.nh}</div></div><div className="rounded-2xl bg-black/40 border border-white/10 p-2"><div className="text-[9px] text-slate-400 font-bold">Pasaran</div><div className="text-xl font-black">{weton.np}</div></div><div className="rounded-2xl bg-amber-500/20 border border-amber-400/30 p-2"><div className="text-[9px] text-amber-200 font-bold">Total</div><div className="text-xl font-black text-amber-300">{weton.tot}</div></div></div></div>
-    <Card title="Sifat & Watak Utama">Weton {weton.hari} {weton.pasaran} menggambarkan pribadi yang {weton.ht[0]}. Pengaruh pasaran {weton.pasaran} menambah sifat {weton.pt[0]}.</Card>
-    <Card title="Kelebihan / Bakat Alami">{weton.ht[1]}. Energi pasaran mendukung rezeki lewat bidang {weton.pt[1]}.</Card>
-    <Card title="Tantangan Yang Perlu Dijaga">{weton.ht[2]}. Kuncinya menjaga keseimbangan, tidak terburu-buru, dan tetap rendah hati.</Card>
-    <div className="grid grid-cols-2 gap-3"><div className="rounded-2xl p-3 border border-amber-400/30 bg-amber-500/10"><h4 className="text-[10px] font-black text-amber-300 uppercase">Naungan</h4><div className="text-xl font-black">{weton.pc[0]}</div><p className="text-[11px] text-white/70">{weton.pc[1]}</p></div><div className="rounded-2xl p-3 border border-indigo-400/30 bg-indigo-500/10"><h4 className="text-[10px] font-black text-indigo-300 uppercase">Kategori</h4><div className="text-sm font-black">{weton.kat}</div><p className="text-[11px] text-white/70">Gunakan energi weton sebagai pengingat diri.</p></div></div>
-    <div className="glass-panel rounded-2xl p-3"><h3 className="text-center font-bold text-xs mb-3">Rekomendasi Primbon Weton</h3><div className="grid grid-cols-2 gap-3"><div className={`p-3 rounded-xl border text-center ${weton.rek.bg} ${weton.rek.border}`}><div className="text-[10px] font-bold">Warna Cocok</div><div className="text-base font-black">{weton.rek.warna}</div></div><div className="p-3 rounded-xl border border-white/20 bg-black/60 text-center"><div className="text-[10px] text-slate-400 font-bold">Arah Energi</div><div className="text-base font-black">{weton.rek.arah}</div></div></div></div>
-    <Card title="Relasi, Rezeki & Saran"><p><b>Relasi:</b> cocok dengan komunikasi terbuka dan saling menghargai.</p><p className="mt-1"><b>Rezeki:</b> bidang {weton.pt[1]}.</p><p className="mt-2 text-amber-200/70 italic">Catatan: tafsir weton adalah warisan budaya/hiburan, bukan keputusan mutlak.</p></Card>
-   </div>}
+        <section id="viewBangas" class="view">
+          <div class="row glass">
+            <label for="selectedDate">Pilih Tanggal:</label>
+            <input id="selectedDate" class="date-input" type="date" inputmode="numeric" />
+          </div>
+          <div id="selectedDateNotice" class="notice" hidden>Masukkan tanggal lengkap yang valid.</div>
+          <div class="date-card glass">
+            <div class="overline">Penanggalan Jawa</div>
+            <div class="big"><span id="javaHari">-</span> <span class="amber" id="javaPasaran">-</span></div>
+            <div class="muted"><span id="javaTanggal">-</span> <span id="javaBulan">-</span> <span id="javaTahun">-</span></div>
+          </div>
+          <div id="bangasStatus" class="status safe">
+            <div class="emoji" id="bangasIcon">✅</div>
+            <div><h3>Status Dino Bangas</h3><p id="bangasDesc">-</p></div>
+          </div>
+          <div id="pangkremanStatus" class="status info">
+            <div class="emoji">ℹ️</div>
+            <div><h3>Status Pangkreman</h3><p id="pangkremanDesc">-</p></div>
+          </div>
+          <div class="suggest glass">
+            <h3>Saran Pakaian</h3>
+            <div class="grid2">
+              <div id="warnaBox" class="pill"><div class="label">Warna</div><div class="value" id="warnaValue">-</div></div>
+              <div class="pill"><div class="label">Arah</div><div class="value" id="arahValue">-</div></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="viewWeton" class="view scroll" hidden>
+          <div class="row glass">
+            <label for="birthDate">Tanggal Lahir:</label>
+            <input id="birthDate" class="date-input" type="date" inputmode="numeric" />
+          </div>
+          <div id="birthDateNotice" class="notice" hidden>Masukkan tanggal lahir lengkap yang valid.</div>
+          <div class="profile-card glass">
+            <div class="overline">Hasil Cek Weton Lahir</div>
+            <div class="big"><span id="wetonHari">-</span> <span class="amber" id="wetonPasaran">-</span></div>
+            <div class="muted"><span id="wetonTanggal">-</span> <span id="wetonBulan">-</span> <span id="wetonTahun">-</span></div>
+            <div class="grid3">
+              <div class="mini"><div class="label">Neptu Hari</div><div class="value" id="neptuHari">-</div></div>
+              <div class="mini"><div class="label">Pasaran</div><div class="value" id="neptuPasaran">-</div></div>
+              <div class="mini total"><div class="label">Total</div><div class="value" id="neptuTotal">-</div></div>
+            </div>
+          </div>
+          <div class="card"><h4>Sifat & Watak Utama</h4><div id="traitMain">-</div></div>
+          <div class="card"><h4>Kelebihan / Bakat Alami</h4><div id="traitTalent">-</div></div>
+          <div class="card"><h4>Tantangan Yang Perlu Dijaga</h4><div id="traitChallenge">-</div></div>
+          <div class="grid2">
+            <div class="box amb"><h4>Naungan</h4><div class="large" id="pancasudaName">-</div><p id="pancasudaDesc">-</p></div>
+            <div class="box ind"><h4>Kategori</h4><div class="large" id="categoryName">-</div><p>Gunakan energi weton sebagai pengingat diri.</p></div>
+          </div>
+          <div class="suggest glass">
+            <h3>Rekomendasi Primbon Weton</h3>
+            <div class="grid2">
+              <div id="wetonWarnaBox" class="pill"><div class="label">Warna Cocok</div><div class="value" id="wetonWarna">-</div></div>
+              <div class="pill"><div class="label">Arah Energi</div><div class="value" id="wetonArah">-</div></div>
+            </div>
+          </div>
+          <div class="card"><h4>Relasi, Rezeki & Saran</h4><div id="relationAdvice">-</div></div>
+        </section>
+      </section>
+
+      <section id="modal" class="modal" aria-hidden="true">
+        <div class="modal-box glass" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+          <div class="modal-head">
+            <h2 id="modalTitle">Tabel Dino Bangas</h2>
+            <button id="closeTable" class="close" type="button" aria-label="Tutup tabel">✕</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Bulan Jawa</th><th>Hari</th><th>Arah</th></tr></thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
-  {modal&&<div className="absolute inset-0 z-50 flex items-center justify-center p-4 modal-overlay bg-black/80"><div className="glass-panel w-full max-w-sm rounded-3xl p-5 modal-content bg-[#1e1b4b]/90"><button onClick={()=>setModal(false)} className="float-right bg-white/10 rounded-full px-3 py-1">✕</button><h2 className="text-lg font-bold mb-4">Tabel Dino Bangas</h2><div className="rounded-xl overflow-hidden border border-white/10"><table className="w-full text-left text-xs"><thead className="bg-white/10 text-amber-300"><tr><th className="p-2">Bulan Jawa</th><th className="p-2">Hari</th><th className="p-2">Arah</th></tr></thead><tbody>{TABLE.map((r,i)=><tr key={i} className="border-t border-white/10"><td className="p-2">{r[0]}</td><td className="p-2 text-orange-300">{r[1]}</td><td className="p-2 text-amber-400 font-bold">{r[2]}</td></tr>)}</tbody></table></div></div></div>}
- </div>;
-}
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-</script>
+
+  <script>
+    'use strict';
+    const PASARAN = ['Legi','Pahing','Pon','Wage','Kliwon'];
+    const HARI = ['Minggu','Senin','Selasa','Rabu','Kamis',"Jum'at",'Sabtu'];
+    const BULAN_JAWA = ['Suro','Sapar','Mulud',"Ba'da Mulud",'Jumadil Awal','Jumadil Akhir','Rejeb','Ruwah','Poso','Sawal','Selo','Besar'];
+    const NEPTU_HARI = {'Minggu':5,'Senin':4,'Selasa':3,'Rabu':7,'Kamis':8,"Jum'at":6,'Sabtu':9};
+    const NEPTU_PASARAN = {'Legi':5,'Pahing':9,'Pon':7,'Wage':4,'Kliwon':8};
+    const TABLE = [
+      ['Suro, Sapar, Mulud','Sabtu/Minggu Legi','Wetan'],
+      ["Ba'da Mulud, Jumadil Awal, Jumadil Akhir",'Senin/Selasa Pahing','Kidul'],
+      ['Rejeb, Ruwah, Poso','Rabu/Kamis Pon','Kulon'],
+      ['Sawal, Selo, Besar',"Jum'at Wage",'Lor']
+    ];
+    const HARI_TRAITS = {
+      'Minggu':['berwibawa, hangat, suka tampil','mudah memimpin','jaga gengsi dan kritik'],
+      'Senin':['lembut, rapi, peka','teliti dan sabar','jangan mudah kepikiran'],
+      'Selasa':['tegas, berani, cepat bergerak','kuat mengambil keputusan','kendalikan emosi'],
+      'Rabu':['cerdas, komunikatif, strategis','pandai bicara dan membaca peluang','jangan plin-plan'],
+      'Kamis':['tenang, bijak, bertanggung jawab','kuat menjaga amanah','jangan terlalu kaku'],
+      "Jum'at":['bersih hati, spiritual, penyayang','mudah dipercaya','jangan memendam beban'],
+      'Sabtu':['kuat, pekerja keras, mandiri','ulet dan tahan banting','kurangi keras kepala']
+    };
+    const PAS_TRAITS = {
+      'Legi':['supel, manis tutur kata, suka damai','relasi, pelayanan, pendidikan'],
+      'Pahing':['ambisius, percaya diri, energinya besar','dagang, promosi, kepemimpinan'],
+      'Pon':['tenang, berhati-hati, berwibawa','aset, administrasi, strategi'],
+      'Wage':['hemat, cekatan, realistis','teknis, operasional, usaha kecil'],
+      'Kliwon':['mendalam, intuisi tajam, kuat batin','kreativitas, seni, konsultasi']
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const pad = (n) => String(n).padStart(2,'0');
+    const todayLocal = () => {
+      const n = new Date();
+      return `${n.getFullYear()}-${pad(n.getMonth()+1)}-${pad(n.getDate())}`;
+    };
+    function parseLocalDate(value){
+      if(!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+      const [y,m,d] = value.split('-').map(Number);
+      const dt = new Date(y,m-1,d,12,0,0);
+      if(Number.isNaN(dt.getTime())) return null;
+      if(dt.getFullYear() !== y || dt.getMonth() !== m-1 || dt.getDate() !== d) return null;
+      return dt;
+    }
+    function getHijriParts(dateObj){
+      try{
+        const parts = new Intl.DateTimeFormat('en-US-u-ca-islamic', {month:'numeric', year:'numeric', day:'numeric'}).formatToParts(dateObj);
+        const month = parseInt((parts.find(p => p.type === 'month') || {}).value || '1', 10);
+        const day = parseInt((parts.find(p => p.type === 'day') || {}).value || '1', 10);
+        const yearRaw = ((parts.find(p => p.type === 'relatedYear' || p.type === 'year') || {}).value || '1445').replace(/[^0-9]/g,'');
+        const year = parseInt(yearRaw || '1445', 10);
+        return {month, day, year};
+      }catch(err){
+        return {month:1, day:1, year:1445};
+      }
+    }
+    function getJavaneseDetails(dateObj){
+      const base = new Date(1970,0,1,12,0,0);
+      const current = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), 12,0,0);
+      const diff = Math.round((current - base) / 86400000);
+      let pasaranIndex = (3 + (diff % 5)) % 5;
+      if(pasaranIndex < 0) pasaranIndex += 5;
+      const hijri = getHijriParts(dateObj);
+      return {
+        hari:HARI[dateObj.getDay()],
+        pasaran:PASARAN[pasaranIndex],
+        tanggal:hijri.day,
+        bulan:BULAN_JAWA[hijri.month - 1] || '-',
+        tahun:hijri.year
+      };
+    }
+    function getPangkremanPasaran(currentDate){
+      const t = new Date(currentDate.getTime());
+      for(let i=0;i<370;i++){
+        const hp = getHijriParts(t);
+        if(hp.month === 1 && hp.day === 1) return getJavaneseDetails(t).pasaran;
+        t.setDate(t.getDate() - 1);
+      }
+      return null;
+    }
+    function checkBangas(bulan,hari,pasaran){
+      const c = `${hari} ${pasaran}`.toUpperCase().replace(/JUM'AT/g,'JUMAT');
+      const rules = [
+        {bulan:['Suro','Sapar','Mulud'], hari:['SABTU LEGI','MINGGU LEGI'], arah:'WETAN'},
+        {bulan:["Ba'da Mulud",'Jumadil Awal','Jumadil Akhir'], hari:['SENIN PAHING','SELASA PAHING'], arah:'KIDUL'},
+        {bulan:['Rejeb','Ruwah','Poso'], hari:['RABU PON','KAMIS PON'], arah:'KULON'},
+        {bulan:['Sawal','Selo','Besar'], hari:['JUMAT WAGE'], arah:'LOR'}
+      ];
+      for(const r of rules){
+        if(r.bulan.includes(bulan) && r.hari.includes(c)) return {isBangas:true, desc:`Hari ini Dino Bangas! Arah nogo tahun di ${r.arah}.`, arah:r.arah};
+      }
+      return {isBangas:false, desc:'Bukan Dino Bangas. Hari ini aman.', arah:null};
+    }
+    function getRekomendasi(p){
+      return {
+        'Legi':{warna:'PUTIH',arah:'TIMUR',cls:'white'},
+        'Pahing':{warna:'MERAH',arah:'SELATAN',cls:'red'},
+        'Pon':{warna:'KUNING',arah:'BARAT',cls:'yellow'},
+        'Wage':{warna:'HITAM',arah:'UTARA',cls:'black'},
+        'Kliwon':{warna:'NETRAL',arah:'TENGAH',cls:'purple'}
+      }[p] || {warna:'-',arah:'-',cls:''};
+    }
+    function pancasuda(n){
+      return {
+        1:['Sri','rezeki dan keberuntungan'],
+        2:['Lungguh','kedudukan dan kehormatan'],
+        3:['Gedhong','kecukupan dan simpanan'],
+        4:['Lara','ujian batin dan kepekaan'],
+        0:['Pati','transformasi dan perlu kehati-hatian']
+      }[n % 5];
+    }
+    function kategori(n){
+      if(n <= 9) return 'Lembut & Adaptif';
+      if(n <= 13) return 'Seimbang & Produktif';
+      if(n <= 16) return 'Kuat & Berpengaruh';
+      return 'Tinggi & Intens';
+    }
+    function wetonProfile(dt){
+      const d = getJavaneseDetails(dt);
+      const nh = NEPTU_HARI[d.hari];
+      const np = NEPTU_PASARAN[d.pasaran];
+      const total = nh + np;
+      return {
+        ...d, nh, np, total,
+        ht:HARI_TRAITS[d.hari],
+        pt:PAS_TRAITS[d.pasaran],
+        pc:pancasuda(total),
+        kat:kategori(total),
+        rek:getRekomendasi(d.pasaran)
+      };
+    }
+    function setColorBox(el, cls){
+      el.className = 'pill ' + (cls || '');
+    }
+    function updateBangas(){
+      const dt = parseLocalDate($('selectedDate').value);
+      $('selectedDateNotice').hidden = Boolean(dt);
+      if(!dt) return;
+      const detail = getJavaneseDetails(dt);
+      const status = checkBangas(detail.bulan, detail.hari, detail.pasaran);
+      const pangkrem = getPangkremanPasaran(dt);
+      const isPangkreman = detail.pasaran === pangkrem;
+      const rek = getRekomendasi(detail.pasaran);
+      $('javaHari').textContent = detail.hari;
+      $('javaPasaran').textContent = detail.pasaran;
+      $('javaTanggal').textContent = detail.tanggal;
+      $('javaBulan').textContent = detail.bulan;
+      $('javaTahun').textContent = detail.tahun;
+      $('bangasStatus').className = 'status ' + (status.isBangas ? 'danger' : 'safe');
+      $('bangasIcon').textContent = status.isBangas ? '⚠️' : '✅';
+      $('bangasDesc').textContent = status.desc;
+      $('pangkremanStatus').className = 'status ' + (isPangkreman ? 'warn' : 'info');
+      $('pangkremanDesc').textContent = isPangkreman ? `Awas Pangkreman! (1 Suro = ${pangkrem})` : `Aman. (1 Suro = ${pangkrem || '...'})`;
+      setColorBox($('warnaBox'), rek.cls);
+      $('warnaValue').textContent = rek.warna;
+      $('arahValue').textContent = rek.arah;
+    }
+    function updateWeton(){
+      const dt = parseLocalDate($('birthDate').value);
+      $('birthDateNotice').hidden = Boolean(dt);
+      if(!dt) return;
+      const w = wetonProfile(dt);
+      $('wetonHari').textContent = w.hari;
+      $('wetonPasaran').textContent = w.pasaran;
+      $('wetonTanggal').textContent = w.tanggal;
+      $('wetonBulan').textContent = w.bulan;
+      $('wetonTahun').textContent = w.tahun;
+      $('neptuHari').textContent = w.nh;
+      $('neptuPasaran').textContent = w.np;
+      $('neptuTotal').textContent = w.total;
+      $('traitMain').textContent = `Weton ${w.hari} ${w.pasaran} menggambarkan pribadi yang ${w.ht[0]}. Pengaruh pasaran ${w.pasaran} menambah sifat ${w.pt[0]}.`;
+      $('traitTalent').textContent = `${w.ht[1]}. Energi pasaran mendukung rezeki lewat bidang ${w.pt[1]}.`;
+      $('traitChallenge').textContent = `${w.ht[2]}. Kuncinya menjaga keseimbangan, tidak terburu-buru, dan tetap rendah hati.`;
+      $('pancasudaName').textContent = w.pc[0];
+      $('pancasudaDesc').textContent = w.pc[1];
+      $('categoryName').textContent = w.kat;
+      setColorBox($('wetonWarnaBox'), w.rek.cls);
+      $('wetonWarna').textContent = w.rek.warna;
+      $('wetonArah').textContent = w.rek.arah;
+      $('relationAdvice').innerHTML = `<p><b>Relasi:</b> cocok dengan komunikasi terbuka dan saling menghargai.</p><p style="margin-top:4px"><b>Rezeki:</b> bidang ${w.pt[1]}.</p><p style="margin-top:8px;color:rgba(253,230,138,.75);font-style:italic">Catatan: tafsir weton adalah warisan budaya/hiburan, bukan keputusan mutlak.</p>`;
+    }
+    function setMenu(menu){
+      const isBangas = menu === 'bangas';
+      $('tabBangas').classList.toggle('active', isBangas);
+      $('tabWeton').classList.toggle('active', !isBangas);
+      $('viewBangas').hidden = !isBangas;
+      $('viewWeton').hidden = isBangas;
+    }
+    function openModal(){
+      $('modal').classList.add('show');
+      $('modal').setAttribute('aria-hidden','false');
+    }
+    function closeModal(){
+      $('modal').classList.remove('show');
+      $('modal').setAttribute('aria-hidden','true');
+    }
+    function init(){
+      $('selectedDate').value = todayLocal();
+      $('birthDate').value = '2000-01-01';
+      $('tableBody').innerHTML = TABLE.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+      $('selectedDate').addEventListener('change', updateBangas);
+      $('selectedDate').addEventListener('input', updateBangas);
+      $('birthDate').addEventListener('change', updateWeton);
+      $('birthDate').addEventListener('input', updateWeton);
+      $('tabBangas').addEventListener('click', () => setMenu('bangas'));
+      $('tabWeton').addEventListener('click', () => setMenu('weton'));
+      $('openTable').addEventListener('click', openModal);
+      $('closeTable').addEventListener('click', closeModal);
+      $('modal').addEventListener('click', (e) => { if(e.target === $('modal')) closeModal(); });
+      document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+      updateBangas();
+      updateWeton();
+    }
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
 </body>
 </html>
