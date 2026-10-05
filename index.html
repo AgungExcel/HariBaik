@@ -176,6 +176,20 @@ td:nth-child(3) { color: #fbbf24; font-weight: 900; }
                     </div>
                 </div>
                 
+                <div style="display:flex; flex-direction:column; gap:10px; flex-shrink:0;">
+                    <div style="background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(0,0,0,0.4)); border: 1px solid rgba(245,158,11,0.3); border-radius: 18px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div style="font-size: 10px; font-weight: 900; letter-spacing: 0.1em; color: #fcd34d; margin-bottom: 4px;">PANGKREMAN TAHUN INI</div>
+                        <div id="homeInfoPangkreman" style="font-size: 19px; font-weight: 900; color: #fbbf24; margin-bottom: 2px;">-</div>
+                        <div id="homeInfoPangkremanSub" style="font-size: 11px; color: rgba(255,255,255,0.65);">Menyesuaikan jatuhnya 1 Suro</div>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(0,0,0,0.4)); border: 1px solid rgba(239,68,68,0.3); border-radius: 18px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div style="font-size: 10px; font-weight: 900; letter-spacing: 0.1em; color: #fca5a5; margin-bottom: 4px;">DINO BANGAS BULAN INI</div>
+                        <div id="homeInfoBangas" style="font-size: 19px; font-weight: 900; color: #f87171; margin-bottom: 2px;">-</div>
+                        <div id="homeInfoBangasSub" style="font-size: 11px; color: rgba(255,255,255,0.65);">Bulan Jawa saat ini</div>
+                    </div>
+                </div>
+
                 <div class="suggest glass">
                     <h3>Perkiraan 7 Hari Kedepan</h3>
                     <div id="forecastList" style="display:flex; flex-direction:column; gap:8px;">
@@ -357,20 +371,23 @@ function parseDate(s) {
 }
 
 function formatDateIndo(dt) {
-    const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+    const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
     return `${dt.getDate()} ${months[dt.getMonth()]} ${dt.getFullYear()}`;
 }
 
 function hijri(dt) {
-    try {
-        let p = new Intl.DateTimeFormat('en-US-u-ca-islamic', { month: 'numeric', day: 'numeric', year: 'numeric' }).formatToParts(dt);
-        let g = t => (p.find(x => x.type == t) || {}).value;
-        return { 
-            m: +g('month') || 1, 
-            d: +g('day') || 1, 
-            y: +((p.find(x => x.type === 'relatedYear' || x.type === 'year') || {}).value || '1445').replace(/[^0-9]/g, '') || 1445 
-        };
-    } catch (e) { return { m: 1, d: 1, y: 1445 }; }
+    let g = new Date(dt.getTime());
+    g.setHours(12, 0, 0, 0);
+    let jd = Math.floor(g.getTime() / 86400000) + 2440588;
+    let l = jd - 1948440 + 10632;
+    let n = Math.floor((l - 1) / 10631);
+    l = l - 10631 * n + 354;
+    let j = (Math.floor((10985 - l) / 5316)) * (Math.floor((50 * l) / 17719)) + (Math.floor(l / 5670)) * (Math.floor((43 * l) / 15238));
+    l = l - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
+    let m = Math.floor((24 * l) / 709);
+    let d = l - Math.floor((709 * m) / 24);
+    let y = 30 * n + j - 30;
+    return { y: y, m: m, d: d };
 }
 
 function jawa(dt) {
@@ -392,9 +409,14 @@ function jawa(dt) {
 
 function pangkreman(dt) {
     let t = new Date(dt.getTime());
-    for (let i = 0; i < 370; i++) {
+    t.setHours(12, 0, 0, 0);
+    // Mencari mundur 1 Suro pada tahun yang bersangkutan
+    for (let i = 0; i < 380; i++) {
         let h = hijri(t);
-        if (h.m === 1 && h.d === 1) return jawa(t).pasaran;
+        if (h.m === 1 && h.d === 1) {
+            // Mengembalikan kombinasi Weton (Hari & Pasaran) 1 Suro beserta tanggal Masehinya
+            return { hari: HARI[t.getDay()], pasaran: jawa(t).pasaran, masehi: new Date(t.getTime()) };
+        }
         t.setDate(t.getDate() - 1);
     }
     return null;
@@ -442,11 +464,12 @@ function checkDayStatus(dt) {
     let j = jawa(dt);
     let b = bangas(j.bulan, j.hari, j.pasaran);
     let p = pangkreman(dt);
-    let isPangkreman = j.pasaran === p;
+    
+    let isPangkreman = p && (j.hari === p.hari && j.pasaran === p.pasaran);
     
     if (b.yes && isPangkreman) return { type: 'danger', icon: '⛔', title: 'Bangas & Pangkreman', desc: 'Dilarang menggelar acara penting/besar hari ini.', badge: 'BANGAS & PANGKREMAN', bclass: 'danger' };
     if (b.yes) return { type: 'danger', icon: '⚠️', title: 'Dino Bangas', desc: b.desc, badge: 'DINO BANGAS', bclass: 'danger' };
-    if (isPangkreman) return { type: 'orange', icon: '⚠️', title: 'Pangkreman', desc: `Hari pasaran sama dengan 1 Suro (${p}). Hindari acara penting.`, badge: 'PANGKREMAN', bclass: 'warn' };
+    if (isPangkreman) return { type: 'orange', icon: '⚠️', title: 'Pangkreman', desc: `Weton hari ini sama dengan 1 Suro (${p.hari} ${p.pasaran}).`, badge: 'PANGKREMAN', bclass: 'warn' };
     
     return { type: 'safe', icon: '✅', title: 'Hari Baik (Aman)', desc: 'Tidak ada pantangan Bangas atau Pangkreman hari ini.', badge: 'AMAN', bclass: 'safe' };
 }
@@ -468,6 +491,27 @@ function updateHome() {
     $('homeIcon').textContent = status.icon;
     $('homeStatusTitle').textContent = status.title;
     $('homeStatusDesc').textContent = status.desc;
+
+    let p = pangkreman(today);
+    if(p) {
+        $('homeInfoPangkreman').textContent = `${p.hari} ${p.pasaran}`;
+        $('homeInfoPangkremanSub').textContent = `1 Suro tahun ini jatuh pada ${p.hari} ${p.pasaran}, ${formatDateIndo(p.masehi)}`;
+    }
+    
+    let bRules = [
+        { b: ['Suro', 'Sapar', 'Mulud'], h: 'Sabtu & Minggu Legi', a: 'Wetan' },
+        { b: ["Ba'da Mulud", 'Jumadil Awal', 'Jumadil Akhir'], h: 'Senin & Selasa Pahing', a: 'Kidul' },
+        { b: ['Rejeb', 'Ruwah', 'Poso'], h: 'Rabu & Kamis Pon', a: 'Kulon' },
+        { b: ['Sawal', 'Selo', 'Besar'], h: "Jum'at Wage", a: 'Lor' }
+    ];
+    let activeBangas = bRules.find(r => r.b.includes(j.bulan));
+    if(activeBangas) {
+        $('homeInfoBangas').textContent = activeBangas.h;
+        $('homeInfoBangasSub').textContent = `Berlaku di bulan ${j.bulan} (Arah Nogo: ${activeBangas.a})`;
+    } else {
+        $('homeInfoBangas').textContent = '-';
+        $('homeInfoBangasSub').textContent = '-';
+    }
 
     // Generate forecast
     let listHTML = '';
@@ -506,8 +550,11 @@ function updateBangas() {
     $('bangasIcon').textContent = b.yes ? '⚠️' : '✅';
     $('bangasDesc').textContent = b.desc;
     
-    $('pangkremanBox').className = 'status ' + (j.pasaran === p ? 'orange' : 'info');
-    $('pangkremanDesc').textContent = j.pasaran === p ? `Awas Pangkreman! (1 Suro = ${p})` : `Aman. (1 Suro = ${p || '...'})`;
+    let isPangkreman = p && (j.hari === p.hari && j.pasaran === p.pasaran);
+    $('pangkremanBox').className = 'status ' + (isPangkreman ? 'orange' : 'info');
+    $('pangkremanDesc').textContent = isPangkreman 
+        ? `Awas Pangkreman! Weton sama dengan 1 Suro (${p.hari} ${p.pasaran}).` 
+        : `Aman. (Patokan 1 Suro = ${p ? p.hari + ' ' + p.pasaran : '...'})`;
     
     color($('warnaBox'), r.c);
     $('warnaVal').textContent = r.w;
