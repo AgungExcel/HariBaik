@@ -6,35 +6,584 @@
 <title>Primbon Bangas & Cek Weton</title>
 <link rel="icon" type="image/png" href="haribaik.png" />
 <style>
-:root{--bg1:#0f172a;--bg2:#1e1b4b;--bg3:#020617;--panel:rgba(255,255,255,.07);--bd:rgba(255,255,255,.15);--txt:#f8fafc;--amber:#f59e0b;--amber2:#fbbf24}*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2) 52%,var(--bg3));color:var(--txt)}body{min-height:100dvh;overflow:hidden}button,input{font:inherit}button{border:0;cursor:pointer}[hidden]{display:none!important}#root{height:100dvh;width:100%;display:flex;justify-content:center;overflow:hidden}.app{width:100%;max-width:448px;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column}.glow1,.glow2{position:absolute;width:65%;height:42%;border-radius:999px;filter:blur(95px);pointer-events:none}.glow1{top:-13%;left:-24%;background:rgba(245,158,11,.20)}.glow2{right:-25%;bottom:-12%;background:rgba(99,102,241,.22)}.content{position:relative;z-index:1;flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;padding:10px}.glass{background:var(--panel);border:1px solid var(--bd);box-shadow:0 8px 32px rgba(0,0,0,.25);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}.brand{display:flex;align-items:center;gap:10px;min-width:0}.logo{width:44px;height:44px;border-radius:14px;object-fit:cover;background:rgba(0,0,0,.35);border:1px solid rgba(245,158,11,.35)}h1{margin:0;font-size:21px;line-height:1;font-weight:900;background:linear-gradient(90deg,#fbbf24,#f59e0b,#ea580c);-webkit-background-clip:text;background-clip:text;color:transparent}.sub{margin:4px 0 0;color:rgba(253,230,138,.72);font-size:9px;font-weight:800;letter-spacing:.12em}.btn{border-radius:12px;padding:9px 11px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.2);color:#fcd34d;font-size:12px;font-weight:900}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:17px;flex-shrink:0}.tab{min-width:0;border-radius:13px;padding:10px 4px;background:transparent;color:rgba(255,255,255,.72);font-size:12px;font-weight:900;white-space:nowrap}.tab.active{background:#f59e0b;color:#0f172a}.view{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px}.scroll{overflow-y:auto;scrollbar-width:none;padding-bottom:4px}.scroll::-webkit-scrollbar{display:none}.row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 12px;border-radius:18px;flex-shrink:0}.row label{font-size:12px;font-weight:800}.date{min-width:136px;max-width:155px;background:rgba(0,0,0,.50);border:1px solid rgba(255,255,255,.22);border-radius:12px;color:#fff;color-scheme:dark;padding:8px 9px;font-size:12px;font-weight:800}.warnbox{border-radius:16px;padding:10px;border:1px solid rgba(251,191,36,.35);background:rgba(245,158,11,.12);color:#fde68a;font-size:12px}.datecard,.profile{border-radius:22px;padding:14px;text-align:center;flex-shrink:0}.over{font-size:9px;font-weight:900;letter-spacing:.25em;text-transform:uppercase;color:rgba(253,230,138,.65);margin-bottom:6px}.big{font-size:27px;line-height:1.08;font-weight:900}.amber{color:var(--amber2)}.muted{margin-top:5px;font-size:12px;color:#cbd5e1}.status{border-radius:18px;padding:13px;border:1px solid rgba(255,255,255,.13);display:flex;gap:12px}.status h3{font-size:13px;margin:0}.status p{font-size:12px;line-height:1.42;margin:4px 0 0;color:rgba(255,255,255,.77)}.emoji{font-size:20px}.safe{background:rgba(6,78,59,.33);border-color:rgba(16,185,129,.35)}.danger{background:rgba(127,29,29,.52);border-color:rgba(239,68,68,.52)}.info{background:rgba(255,255,255,.05)}.orange{background:rgba(124,45,18,.50);border-color:rgba(249,115,22,.50)}.suggest{border-radius:18px;padding:12px;flex-shrink:0}.suggest h3{font-size:12px;margin:0 0 10px;text-align:center}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}.pill,.mini{border-radius:14px;text-align:center;padding:10px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.45)}.lbl{font-size:9px;font-weight:900;color:#94a3b8}.val{font-size:17px;font-weight:900;margin-top:2px}.mini .val{font-size:20px}.total{background:rgba(245,158,11,.18);border-color:rgba(251,191,36,.32)}.total .lbl,.total .val{color:#fcd34d}.card{border-radius:17px;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10)}.card h4{margin:0 0 6px;color:#fcd34d;font-size:9px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}.card div,.card p{font-size:12px;line-height:1.48;color:rgba(255,255,255,.82);margin:0}.box{border-radius:17px;padding:12px;border:1px solid}.box h4{margin:0 0 4px;font-size:9px;text-transform:uppercase}.box .large{font-size:18px;font-weight:900}.box p{margin:2px 0 0;font-size:11px;color:rgba(255,255,255,.72)}.amb{background:rgba(245,158,11,.12);border-color:rgba(251,191,36,.35)}.ind{background:rgba(99,102,241,.12);border-color:rgba(129,140,248,.35)}.white{background:#fff;color:#0f172a;border-color:#fff}.red{background:#ef4444;color:#fff;border-color:#f87171}.yellow{background:#facc15;color:#0f172a;border-color:#fde047}.black{background:#111827;color:#fff;border-color:#525252}.purple{background:linear-gradient(135deg,#6366f1,#9333ea);color:#fff;border-color:#818cf8}.modal{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:50;background:rgba(0,0,0,.80);padding:14px}.modal.show{display:flex}.modalbox{width:100%;max-width:390px;border-radius:24px;padding:18px;background:rgba(30,27,75,.96)}.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.modal h2{font-size:18px;margin:0}.tablewrap{overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:13px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px 7px;text-align:left}thead{background:rgba(255,255,255,.10);color:#fcd34d}tr+tr{border-top:1px solid rgba(255,255,255,.10)}td:nth-child(2){color:#fdba74}td:nth-child(3){color:#fbbf24;font-weight:900}@media(max-width:360px){.content{padding:8px;gap:8px}.big{font-size:23px}.row{flex-direction:column;align-items:stretch}.date{max-width:none;width:100%}.tab{font-size:11px;padding:9px 2px}.logo{width:40px;height:40px}h1{font-size:19px}.grid2{gap:8px}.pill{padding:9px 6px}.val{font-size:15px}}
+:root {
+    --bg1: #0f172a;
+    --bg2: #1e1b4b;
+    --bg3: #020617;
+    --panel: rgba(255,255,255,.07);
+    --bd: rgba(255,255,255,.15);
+    --txt: #f8fafc;
+    --amber: #f59e0b;
+    --amber2: #fbbf24;
+}
+* { box-sizing: border-box; }
+html, body {
+    margin: 0;
+    min-height: 100%;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2) 52%, var(--bg3));
+    color: var(--txt);
+}
+body { min-height: 100dvh; overflow: hidden; }
+button, input { font: inherit; }
+button { border: 0; cursor: pointer; }
+[hidden] { display: none !important; }
+
+#root { height: 100dvh; width: 100%; display: flex; justify-content: center; overflow: hidden; }
+.app { width: 100%; max-width: 448px; height: 100%; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+.glow1, .glow2 { position: absolute; width: 65%; height: 42%; border-radius: 999px; filter: blur(95px); pointer-events: none; }
+.glow1 { top: -13%; left: -24%; background: rgba(245,158,11,.20); }
+.glow2 { right: -25%; bottom: -12%; background: rgba(99,102,241,.22); }
+.content { position: relative; z-index: 1; flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 10px; }
+.glass {
+    background: var(--panel);
+    border: 1px solid var(--bd);
+    box-shadow: 0 8px 32px rgba(0,0,0,.25);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.logo { width: 44px; height: 44px; border-radius: 14px; object-fit: cover; background: rgba(0,0,0,.35); border: 1px solid rgba(245,158,11,.35); }
+h1 { margin: 0; font-size: 21px; line-height: 1; font-weight: 900; background: linear-gradient(90deg,#fbbf24,#f59e0b,#ea580c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sub { margin: 4px 0 0; color: rgba(253,230,138,.72); font-size: 9px; font-weight: 800; letter-spacing: .12em; }
+.btn { border-radius: 12px; padding: 9px 11px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.2); color: #fcd34d; font-size: 12px; font-weight: 900; }
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 5px; border-radius: 17px; flex-shrink: 0; }
+.tab { min-width: 0; border-radius: 13px; padding: 10px 4px; background: transparent; color: rgba(255,255,255,.72); font-size: 12px; font-weight: 900; white-space: nowrap; transition: 0.2s; }
+.tab.active { background: #f59e0b; color: #0f172a; }
+
+.view { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
+.scroll { overflow-y: auto; scrollbar-width: none; padding-bottom: 4px; }
+.scroll::-webkit-scrollbar { display: none; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 12px; border-radius: 18px; flex-shrink: 0; }
+.row label { font-size: 12px; font-weight: 800; }
+.date { min-width: 136px; max-width: 155px; background: rgba(0,0,0,.50); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; color: #fff; color-scheme: dark; padding: 8px 9px; font-size: 12px; font-weight: 800; }
+.warnbox { border-radius: 16px; padding: 10px; border: 1px solid rgba(251,191,36,.35); background: rgba(245,158,11,.12); color: #fde68a; font-size: 12px; }
+
+.datecard, .profile { border-radius: 22px; padding: 14px; text-align: center; flex-shrink: 0; }
+.over { font-size: 9px; font-weight: 900; letter-spacing: .25em; text-transform: uppercase; color: rgba(253,230,138,.65); margin-bottom: 6px; }
+.big { font-size: 27px; line-height: 1.08; font-weight: 900; }
+.amber { color: var(--amber2); }
+.muted { margin-top: 5px; font-size: 12px; color: #cbd5e1; }
+.status { border-radius: 18px; padding: 13px; border: 1px solid rgba(255,255,255,.13); display: flex; gap: 12px; align-items: center; }
+.status h3 { font-size: 13px; margin: 0; }
+.status p { font-size: 12px; line-height: 1.42; margin: 4px 0 0; color: rgba(255,255,255,.77); }
+.emoji { font-size: 20px; flex-shrink: 0; }
+.safe { background: rgba(6,78,59,.33); border-color: rgba(16,185,129,.35); }
+.danger { background: rgba(127,29,29,.52); border-color: rgba(239,68,68,.52); }
+.info { background: rgba(255,255,255,.05); }
+.orange { background: rgba(124,45,18,.50); border-color: rgba(249,115,22,.50); }
+
+.suggest { border-radius: 18px; padding: 12px; flex-shrink: 0; }
+.suggest h3 { font-size: 12px; margin: 0 0 10px; text-align: center; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin-top: 12px; }
+.pill, .mini { border-radius: 14px; text-align: center; padding: 10px; border: 1px solid rgba(255,255,255,.18); background: rgba(0,0,0,.45); }
+.lbl { font-size: 9px; font-weight: 900; color: #94a3b8; }
+.val { font-size: 17px; font-weight: 900; margin-top: 2px; }
+.mini .val { font-size: 20px; }
+.total { background: rgba(245,158,11,.18); border-color: rgba(251,191,36,.32); }
+.total .lbl, .total .val { color: #fcd34d; }
+.card { border-radius: 17px; padding: 12px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.10); }
+.card h4 { margin: 0 0 6px; color: #fcd34d; font-size: 9px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+.card div, .card p { font-size: 12px; line-height: 1.48; color: rgba(255,255,255,.82); margin: 0; }
+.box { border-radius: 17px; padding: 12px; border: 1px solid; }
+.box h4 { margin: 0 0 4px; font-size: 9px; text-transform: uppercase; }
+.box .large { font-size: 18px; font-weight: 900; }
+.box p { margin: 2px 0 0; font-size: 11px; color: rgba(255,255,255,.72); }
+
+.amb { background: rgba(245,158,11,.12); border-color: rgba(251,191,36,.35); }
+.ind { background: rgba(99,102,241,.12); border-color: rgba(129,140,248,.35); }
+.white { background: #fff; color: #0f172a; border-color: #fff; }
+.red { background: #ef4444; color: #fff; border-color: #f87171; }
+.yellow { background: #facc15; color: #0f172a; border-color: #fde047; }
+.black { background: #111827; color: #fff; border-color: #525252; }
+.purple { background: linear-gradient(135deg, #6366f1, #9333ea); color: #fff; border-color: #818cf8; }
+
+.fc-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; gap: 10px; }
+.fc-date-wrap { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.fc-date { font-size: 10px; color: #94a3b8; }
+.fc-jawa { font-size: 13px; font-weight: 800; color: #f8fafc; }
+.fc-jawa span { color: var(--amber2); }
+.badge { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 8px; text-transform: uppercase; letter-spacing: .05em; text-align: center; white-space: nowrap; }
+.badge.safe { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+.badge.danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+.badge.warn { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+
+.modal { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; z-index: 50; background: rgba(0,0,0,.80); padding: 14px; }
+.modal.show { display: flex; }
+.modalbox { width: 100%; max-width: 390px; border-radius: 24px; padding: 18px; background: rgba(30,27,75,.96); }
+.modalhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.modal h2 { font-size: 18px; margin: 0; }
+.tablewrap { overflow: hidden; border: 1px solid rgba(255,255,255,.10); border-radius: 13px; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th, td { padding: 9px 7px; text-align: left; }
+thead { background: rgba(255,255,255,.10); color: #fcd34d; }
+tr+tr { border-top: 1px solid rgba(255,255,255,.10); }
+td:nth-child(2) { color: #fdba74; }
+td:nth-child(3) { color: #fbbf24; font-weight: 900; }
+
+@media(max-width:360px){
+    .content { padding: 8px; gap: 8px; }
+    .big { font-size: 23px; }
+    .row { flex-direction: column; align-items: stretch; }
+    .date { max-width: none; width: 100%; }
+    .tab { font-size: 10px; padding: 9px 2px; }
+    .logo { width: 40px; height: 40px; }
+    h1 { font-size: 19px; }
+    .grid2 { gap: 8px; }
+    .pill { padding: 9px 6px; }
+    .val { font-size: 15px; }
+}
 </style>
 </head>
-<body><div id="root"><main class="app"><div class="glow1"></div><div class="glow2"></div><section class="content">
-<header class="head"><div class="brand"><img class="logo" src="haribaik.png" alt="Logo" onerror="this.style.display='none'"><div><h1>Primbon Bangas</h1><p class="sub">BANGAS • WETON • PRIMBON</p></div></div><button id="openTable" class="btn" type="button">Tabel</button></header>
-<nav class="tabs glass"><button id="tabBangas" class="tab active" type="button">Dino Bangas</button><button id="tabWeton" class="tab" type="button">Cek Weton</button></nav>
-<section id="viewBangas" class="view"><div class="row glass"><label for="selectedDate">Pilih Tanggal:</label><input id="selectedDate" class="date" type="date"></div><div id="selectedNotice" class="warnbox" hidden>Masukkan tanggal lengkap yang valid.</div><div class="datecard glass"><div class="over">Penanggalan Jawa</div><div class="big"><span id="javaHari">-</span> <span id="javaPasaran" class="amber">-</span></div><div class="muted"><span id="javaTgl">-</span> <span id="javaBulan">-</span> <span id="javaTahun">-</span></div></div><div id="bangasBox" class="status safe"><div id="bangasIcon" class="emoji">✅</div><div><h3>Status Dino Bangas</h3><p id="bangasDesc">-</p></div></div><div id="pangkremanBox" class="status info"><div class="emoji">ℹ️</div><div><h3>Status Pangkreman</h3><p id="pangkremanDesc">-</p></div></div><div class="suggest glass"><h3>Saran Pakaian</h3><div class="grid2"><div id="warnaBox" class="pill"><div class="lbl">Warna</div><div id="warnaVal" class="val">-</div></div><div class="pill"><div class="lbl">Arah</div><div id="arahVal" class="val">-</div></div></div></div></section>
-<section id="viewWeton" class="view scroll" hidden><div class="row glass"><label for="birthDate">Tanggal Lahir:</label><input id="birthDate" class="date" type="date"></div><div id="birthNotice" class="warnbox" hidden>Masukkan tanggal lahir lengkap yang valid.</div><div class="profile glass"><div class="over">Hasil Cek Weton Lahir</div><div class="big"><span id="wetonHari">-</span> <span id="wetonPasaran" class="amber">-</span></div><div class="muted"><span id="wetonTgl">-</span> <span id="wetonBulan">-</span> <span id="wetonTahun">-</span></div><div class="grid3"><div class="mini"><div class="lbl">Neptu Hari</div><div id="nh" class="val">-</div></div><div class="mini"><div class="lbl">Pasaran</div><div id="np" class="val">-</div></div><div class="mini total"><div class="lbl">Total</div><div id="nt" class="val">-</div></div></div></div><div class="card"><h4>Sifat & Watak Utama</h4><div id="trait1">-</div></div><div class="card"><h4>Kelebihan / Bakat Alami</h4><div id="trait2">-</div></div><div class="card"><h4>Tantangan Yang Perlu Dijaga</h4><div id="trait3">-</div></div><div class="grid2"><div class="box amb"><h4>Naungan</h4><div id="pcName" class="large">-</div><p id="pcDesc">-</p></div><div class="box ind"><h4>Kategori</h4><div id="kat" class="large">-</div><p>Gunakan energi weton sebagai pengingat diri.</p></div></div><div class="suggest glass"><h3>Rekomendasi Primbon Weton</h3><div class="grid2"><div id="wetonWarnaBox" class="pill"><div class="lbl">Warna Cocok</div><div id="wetonWarna" class="val">-</div></div><div class="pill"><div class="lbl">Arah Energi</div><div id="wetonArah" class="val">-</div></div></div></div><div class="card"><h4>Relasi, Rezeki & Saran</h4><div id="advice">-</div></div></section>
-</section><section id="modal" class="modal"><div class="modalbox glass"><div class="modalhead"><h2>Tabel Dino Bangas</h2><button id="closeTable" class="btn" type="button">✕</button></div><div class="tablewrap"><table><thead><tr><th>Bulan Jawa</th><th>Hari</th><th>Arah</th></tr></thead><tbody id="tableBody"></tbody></table></div></div></section></main></div>
+<body>
+<div id="root">
+    <main class="app">
+        <div class="glow1"></div>
+        <div class="glow2"></div>
+        <section class="content">
+            <header class="head">
+                <div class="brand">
+                    <img class="logo" src="haribaik.png" alt="Logo" onerror="this.style.display='none'">
+                    <div>
+                        <h1>Primbon Bangas</h1>
+                        <p class="sub">BANGAS • WETON • PRIMBON</p>
+                    </div>
+                </div>
+                <button id="openTable" class="btn" type="button">Tabel</button>
+            </header>
+
+            <nav class="tabs glass">
+                <button id="tabHome" class="tab active" type="button">Beranda</button>
+                <button id="tabBangas" class="tab" type="button">Dino Bangas</button>
+                <button id="tabWeton" class="tab" type="button">Cek Weton</button>
+            </nav>
+
+            <section id="viewHome" class="view scroll">
+                <div class="profile glass">
+                    <div class="over">Hari Baik Hari Ini</div>
+                    <div class="big"><span id="homeHari">-</span> <span id="homePasaran" class="amber">-</span></div>
+                    <div class="muted"><span id="homeTgl">-</span> <span id="homeBulan">-</span> <span id="homeTahun">-</span></div>
+                    
+                    <div id="homeStatusBox" class="status safe" style="margin-top: 14px; text-align: left;">
+                        <div id="homeIcon" class="emoji">✅</div>
+                        <div>
+                            <h3 id="homeStatusTitle">Hari Baik (Aman)</h3>
+                            <p id="homeStatusDesc">Tidak ada pantangan Bangas atau Pangkreman hari ini.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="suggest glass">
+                    <h3>Perkiraan 7 Hari Kedepan</h3>
+                    <div id="forecastList" style="display:flex; flex-direction:column; gap:8px;">
+                        <!-- Forecast items populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="viewBangas" class="view scroll" hidden>
+                <div class="row glass">
+                    <label for="selectedDate">Pilih Tanggal:</label>
+                    <input id="selectedDate" class="date" type="date">
+                </div>
+                <div id="selectedNotice" class="warnbox" hidden>Masukkan tanggal lengkap yang valid.</div>
+                <div class="datecard glass">
+                    <div class="over">Penanggalan Jawa</div>
+                    <div class="big"><span id="javaHari">-</span> <span id="javaPasaran" class="amber">-</span></div>
+                    <div class="muted"><span id="javaTgl">-</span> <span id="javaBulan">-</span> <span id="javaTahun">-</span></div>
+                </div>
+                <div id="bangasBox" class="status safe">
+                    <div id="bangasIcon" class="emoji">✅</div>
+                    <div>
+                        <h3>Status Dino Bangas</h3>
+                        <p id="bangasDesc">-</p>
+                    </div>
+                </div>
+                <div id="pangkremanBox" class="status info">
+                    <div class="emoji">ℹ️</div>
+                    <div>
+                        <h3>Status Pangkreman</h3>
+                        <p id="pangkremanDesc">-</p>
+                    </div>
+                </div>
+                <div class="suggest glass">
+                    <h3>Saran Pakaian</h3>
+                    <div class="grid2">
+                        <div id="warnaBox" class="pill">
+                            <div class="lbl">Warna</div>
+                            <div id="warnaVal" class="val">-</div>
+                        </div>
+                        <div class="pill">
+                            <div class="lbl">Arah</div>
+                            <div id="arahVal" class="val">-</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="viewWeton" class="view scroll" hidden>
+                <div class="row glass">
+                    <label for="birthDate">Tanggal Lahir:</label>
+                    <input id="birthDate" class="date" type="date">
+                </div>
+                <div id="birthNotice" class="warnbox" hidden>Masukkan tanggal lahir lengkap yang valid.</div>
+                <div class="profile glass">
+                    <div class="over">Hasil Cek Weton Lahir</div>
+                    <div class="big"><span id="wetonHari">-</span> <span id="wetonPasaran" class="amber">-</span></div>
+                    <div class="muted"><span id="wetonTgl">-</span> <span id="wetonBulan">-</span> <span id="wetonTahun">-</span></div>
+                    <div class="grid3">
+                        <div class="mini">
+                            <div class="lbl">Neptu Hari</div>
+                            <div id="nh" class="val">-</div>
+                        </div>
+                        <div class="mini">
+                            <div class="lbl">Pasaran</div>
+                            <div id="np" class="val">-</div>
+                        </div>
+                        <div class="mini total">
+                            <div class="lbl">Total</div>
+                            <div id="nt" class="val">-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>Sifat & Watak Utama</h4>
+                    <div id="trait1">-</div>
+                </div>
+                <div class="card">
+                    <h4>Kelebihan / Bakat Alami</h4>
+                    <div id="trait2">-</div>
+                </div>
+                <div class="card">
+                    <h4>Tantangan Yang Perlu Dijaga</h4>
+                    <div id="trait3">-</div>
+                </div>
+                <div class="grid2">
+                    <div class="box amb">
+                        <h4>Naungan</h4>
+                        <div id="pcName" class="large">-</div>
+                        <p id="pcDesc">-</p>
+                    </div>
+                    <div class="box ind">
+                        <h4>Kategori</h4>
+                        <div id="kat" class="large">-</div>
+                        <p>Gunakan energi weton sebagai pengingat diri.</p>
+                    </div>
+                </div>
+                <div class="suggest glass">
+                    <h3>Rekomendasi Primbon Weton</h3>
+                    <div class="grid2">
+                        <div id="wetonWarnaBox" class="pill">
+                            <div class="lbl">Warna Cocok</div>
+                            <div id="wetonWarna" class="val">-</div>
+                        </div>
+                        <div class="pill">
+                            <div class="lbl">Arah Energi</div>
+                            <div id="wetonArah" class="val">-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>Relasi, Rezeki & Saran</h4>
+                    <div id="advice">-</div>
+                </div>
+            </section>
+        </section>
+
+        <section id="modal" class="modal">
+            <div class="modalbox glass">
+                <div class="modalhead">
+                    <h2>Tabel Dino Bangas</h2>
+                    <button id="closeTable" class="btn" type="button">✕</button>
+                </div>
+                <div class="tablewrap">
+                    <table>
+                        <thead>
+                            <tr><th>Bulan Jawa</th><th>Hari</th><th>Arah</th></tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
 <script>
 'use strict';
-const PASARAN=['Legi','Pahing','Pon','Wage','Kliwon'],HARI=['Minggu','Senin','Selasa','Rabu','Kamis',"Jum'at",'Sabtu'],BULAN_JAWA=['Suro','Sapar','Mulud',"Ba'da Mulud",'Jumadil Awal','Jumadil Akhir','Rejeb','Ruwah','Poso','Sawal','Selo','Besar'];
-const NEPTU_HARI={'Minggu':5,'Senin':4,'Selasa':3,'Rabu':7,'Kamis':8,"Jum'at":6,'Sabtu':9},NEPTU_PASARAN={'Legi':5,'Pahing':9,'Pon':7,'Wage':4,'Kliwon':8};
-const TABLE=[['Suro, Sapar, Mulud','Sabtu/Minggu Legi','Wetan'],["Ba'da Mulud, Jumadil Awal, Jumadil Akhir",'Senin/Selasa Pahing','Kidul'],['Rejeb, Ruwah, Poso','Rabu/Kamis Pon','Kulon'],['Sawal, Selo, Besar',"Jum'at Wage",'Lor']];
-const HT={'Minggu':['berwibawa, hangat, suka tampil','mudah memimpin','jaga gengsi dan kritik'],'Senin':['lembut, rapi, peka','teliti dan sabar','jangan mudah kepikiran'],'Selasa':['tegas, berani, cepat bergerak','kuat mengambil keputusan','kendalikan emosi'],'Rabu':['cerdas, komunikatif, strategis','pandai bicara dan membaca peluang','jangan plin-plan'],'Kamis':['tenang, bijak, bertanggung jawab','kuat menjaga amanah','jangan terlalu kaku'],"Jum'at":['bersih hati, spiritual, penyayang','mudah dipercaya','jangan memendam beban'],'Sabtu':['kuat, pekerja keras, mandiri','ulet dan tahan banting','kurangi keras kepala']};
-const PT={'Legi':['supel, manis tutur kata, suka damai','relasi, pelayanan, pendidikan'],'Pahing':['ambisius, percaya diri, energinya besar','dagang, promosi, kepemimpinan'],'Pon':['tenang, berhati-hati, berwibawa','aset, administrasi, strategi'],'Wage':['hemat, cekatan, realistis','teknis, operasional, usaha kecil'],'Kliwon':['mendalam, intuisi tajam, kuat batin','kreativitas, seni, konsultasi']};
-const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,'0'),today=()=>{let n=new Date();return `${n.getFullYear()}-${pad(n.getMonth()+1)}-${pad(n.getDate())}`};
-function parseDate(s){if(!s||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;let [y,m,d]=s.split('-').map(Number),dt=new Date(y,m-1,d,12);return dt.getFullYear()==y&&dt.getMonth()==m-1&&dt.getDate()==d?dt:null}
-function hijri(dt){try{let p=new Intl.DateTimeFormat('en-US-u-ca-islamic',{month:'numeric',day:'numeric',year:'numeric'}).formatToParts(dt);let g=t=>(p.find(x=>x.type==t)||{}).value;return{m:+g('month')||1,d:+g('day')||1,y:+((p.find(x=>x.type==='relatedYear'||x.type==='year')||{}).value||'1445').replace(/[^0-9]/g,'')||1445}}catch(e){return{m:1,d:1,y:1445}}}
-function jawa(dt){let base=new Date(1970,0,1,12),cur=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate(),12),diff=Math.round((cur-base)/86400000),pi=(3+(diff%5))%5;if(pi<0)pi+=5;let h=hijri(dt);return{hari:HARI[dt.getDay()],pasaran:PASARAN[pi],tanggal:h.d,bulan:BULAN_JAWA[h.m-1]||'-',tahun:h.y}}
-function pangkreman(dt){let t=new Date(dt.getTime());for(let i=0;i<370;i++){let h=hijri(t);if(h.m===1&&h.d===1)return jawa(t).pasaran;t.setDate(t.getDate()-1)}return null}
-function bangas(b,h,p){let c=`${h} ${p}`.toUpperCase().replace(/JUM'AT/g,'JUMAT'),rules=[{b:['Suro','Sapar','Mulud'],h:['SABTU LEGI','MINGGU LEGI'],a:'WETAN'},{b:["Ba'da Mulud",'Jumadil Awal','Jumadil Akhir'],h:['SENIN PAHING','SELASA PAHING'],a:'KIDUL'},{b:['Rejeb','Ruwah','Poso'],h:['RABU PON','KAMIS PON'],a:'KULON'},{b:['Sawal','Selo','Besar'],h:['JUMAT WAGE'],a:'LOR'}];for(let r of rules)if(r.b.includes(b)&&r.h.includes(c))return{yes:true,desc:`Hari ini Dino Bangas! Arah nogo tahun di ${r.a}.`};return{yes:false,desc:'Bukan Dino Bangas. Hari ini aman.'}}
-function rek(p){return{'Legi':{w:'PUTIH',a:'TIMUR',c:'white'},'Pahing':{w:'MERAH',a:'SELATAN',c:'red'},'Pon':{w:'KUNING',a:'BARAT',c:'yellow'},'Wage':{w:'HITAM',a:'UTARA',c:'black'},'Kliwon':{w:'NETRAL',a:'TENGAH',c:'purple'}}[p]||{w:'-',a:'',c:''}}
-function pc(n){return{1:['Sri','rezeki dan keberuntungan'],2:['Lungguh','kedudukan dan kehormatan'],3:['Gedhong','kecukupan dan simpanan'],4:['Lara','ujian batin dan kepekaan'],0:['Pati','transformasi dan perlu kehati-hatian']}[n%5]}
-function kat(n){return n<=9?'Lembut & Adaptif':n<=13?'Seimbang & Produktif':n<=16?'Kuat & Berpengaruh':'Tinggi & Intens'}
-function color(el,c){el.className='pill '+(c||'')}
-function updateBangas(){let dt=parseDate($('selectedDate').value);$('selectedNotice').hidden=!!dt;if(!dt)return;let j=jawa(dt),b=bangas(j.bulan,j.hari,j.pasaran),p=pangkreman(dt),r=rek(j.pasaran);$('javaHari').textContent=j.hari;$('javaPasaran').textContent=j.pasaran;$('javaTgl').textContent=j.tanggal;$('javaBulan').textContent=j.bulan;$('javaTahun').textContent=j.tahun;$('bangasBox').className='status '+(b.yes?'danger':'safe');$('bangasIcon').textContent=b.yes?'⚠️':'✅';$('bangasDesc').textContent=b.desc;$('pangkremanBox').className='status '+(j.pasaran===p?'orange':'info');$('pangkremanDesc').textContent=j.pasaran===p?`Awas Pangkreman! (1 Suro = ${p})`:`Aman. (1 Suro = ${p||'...'})`;color($('warnaBox'),r.c);$('warnaVal').textContent=r.w;$('arahVal').textContent=r.a}
-function updateWeton(){let dt=parseDate($('birthDate').value);$('birthNotice').hidden=!!dt;if(!dt)return;let j=jawa(dt),nh=NEPTU_HARI[j.hari],np=NEPTU_PASARAN[j.pasaran],nt=nh+np,p=pc(nt),r=rek(j.pasaran);$('wetonHari').textContent=j.hari;$('wetonPasaran').textContent=j.pasaran;$('wetonTgl').textContent=j.tanggal;$('wetonBulan').textContent=j.bulan;$('wetonTahun').textContent=j.tahun;$('nh').textContent=nh;$('np').textContent=np;$('nt').textContent=nt;$('trait1').textContent=`Weton ${j.hari} ${j.pasaran} menggambarkan pribadi yang ${HT[j.hari][0]}. Pengaruh pasaran ${j.pasaran} menambah sifat ${PT[j.pasaran][0]}.`;$('trait2').textContent=`${HT[j.hari][1]}. Energi pasaran mendukung rezeki lewat bidang ${PT[j.pasaran][1]}.`;$('trait3').textContent=`${HT[j.hari][2]}. Kuncinya menjaga keseimbangan, tidak terburu-buru, dan tetap rendah hati.`;$('pcName').textContent=p[0];$('pcDesc').textContent=p[1];$('kat').textContent=kat(nt);color($('wetonWarnaBox'),r.c);$('wetonWarna').textContent=r.w;$('wetonArah').textContent=r.a;$('advice').innerHTML=`<p><b>Relasi:</b> cocok dengan komunikasi terbuka dan saling menghargai.</p><p style="margin-top:4px"><b>Rezeki:</b> bidang ${PT[j.pasaran][1]}.</p><p style="margin-top:8px;color:rgba(253,230,138,.75);font-style:italic">Catatan: tafsir weton adalah warisan budaya/hiburan, bukan keputusan mutlak.</p>`}
-function menu(m){let b=m==='bangas';$('tabBangas').classList.toggle('active',b);$('tabWeton').classList.toggle('active',!b);$('viewBangas').hidden=!b;$('viewWeton').hidden=b}
-function init(){$('selectedDate').value=today();$('birthDate').value='2000-01-01';$('tableBody').innerHTML=TABLE.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');['change','input'].forEach(e=>{$('selectedDate').addEventListener(e,updateBangas);$('birthDate').addEventListener(e,updateWeton)});$('tabBangas').onclick=()=>menu('bangas');$('tabWeton').onclick=()=>menu('weton');$('openTable').onclick=()=>$('modal').classList.add('show');$('closeTable').onclick=()=>$('modal').classList.remove('show');$('modal').onclick=e=>{if(e.target===$('modal'))$('modal').classList.remove('show')};updateBangas();updateWeton()}
-document.addEventListener('DOMContentLoaded',init);
-</script></body></html>
+const PASARAN = ['Legi', 'Pahing', 'Pon', 'Wage', 'Kliwon'];
+const HARI = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu'];
+const BULAN_JAWA = ['Suro', 'Sapar', 'Mulud', "Ba'da Mulud", 'Jumadil Awal', 'Jumadil Akhir', 'Rejeb', 'Ruwah', 'Poso', 'Sawal', 'Selo', 'Besar'];
+const NEPTU_HARI = { 'Minggu': 5, 'Senin': 4, 'Selasa': 3, 'Rabu': 7, 'Kamis': 8, "Jum'at": 6, 'Sabtu': 9 };
+const NEPTU_PASARAN = { 'Legi': 5, 'Pahing': 9, 'Pon': 7, 'Wage': 4, 'Kliwon': 8 };
+
+const TABLE = [
+    ['Suro, Sapar, Mulud', 'Sabtu/Minggu Legi', 'Wetan'],
+    ["Ba'da Mulud, Jumadil Awal, Jumadil Akhir", 'Senin/Selasa Pahing', 'Kidul'],
+    ['Rejeb, Ruwah, Poso', 'Rabu/Kamis Pon', 'Kulon'],
+    ['Sawal, Selo, Besar', "Jum'at Wage", 'Lor']
+];
+
+const HT = {
+    'Minggu': ['berwibawa, hangat, suka tampil', 'mudah memimpin', 'jaga gengsi dan kritik'],
+    'Senin': ['lembut, rapi, peka', 'teliti dan sabar', 'jangan mudah kepikiran'],
+    'Selasa': ['tegas, berani, cepat bergerak', 'kuat mengambil keputusan', 'kendalikan emosi'],
+    'Rabu': ['cerdas, komunikatif, strategis', 'pandai bicara dan membaca peluang', 'jangan plin-plan'],
+    'Kamis': ['tenang, bijak, bertanggung jawab', 'kuat menjaga amanah', 'jangan terlalu kaku'],
+    "Jum'at": ['bersih hati, spiritual, penyayang', 'mudah dipercaya', 'jangan memendam beban'],
+    'Sabtu': ['kuat, pekerja keras, mandiri', 'ulet dan tahan banting', 'kurangi keras kepala']
+};
+
+const PT = {
+    'Legi': ['supel, manis tutur kata, suka damai', 'relasi, pelayanan, pendidikan'],
+    'Pahing': ['ambisius, percaya diri, energinya besar', 'dagang, promosi, kepemimpinan'],
+    'Pon': ['tenang, berhati-hati, berwibawa', 'aset, administrasi, strategi'],
+    'Wage': ['hemat, cekatan, realistis', 'teknis, operasional, usaha kecil'],
+    'Kliwon': ['mendalam, intuisi tajam, kuat batin', 'kreativitas, seni, konsultasi']
+};
+
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, '0');
+const todayStr = () => { let n = new Date(); return `${n.getFullYear()}-${pad(n.getMonth() + 1)}-${pad(n.getDate())}` };
+
+function parseDate(s) {
+    if (!s || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return null;
+    let [y, m, d] = s.split('-').map(Number);
+    let dt = new Date(y, m - 1, d, 12);
+    return dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d ? dt : null;
+}
+
+function formatDateIndo(dt) {
+    const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+    return `${dt.getDate()} ${months[dt.getMonth()]} ${dt.getFullYear()}`;
+}
+
+function hijri(dt) {
+    try {
+        let p = new Intl.DateTimeFormat('en-US-u-ca-islamic', { month: 'numeric', day: 'numeric', year: 'numeric' }).formatToParts(dt);
+        let g = t => (p.find(x => x.type == t) || {}).value;
+        return { 
+            m: +g('month') || 1, 
+            d: +g('day') || 1, 
+            y: +((p.find(x => x.type === 'relatedYear' || x.type === 'year') || {}).value || '1445').replace(/[^0-9]/g, '') || 1445 
+        };
+    } catch (e) { return { m: 1, d: 1, y: 1445 }; }
+}
+
+function jawa(dt) {
+    let base = new Date(1970, 0, 1, 12);
+    let cur = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 12);
+    let diff = Math.round((cur - base) / 86400000);
+    let pi = (3 + (diff % 5)) % 5;
+    if (pi < 0) pi += 5;
+    
+    let h = hijri(dt);
+    return { 
+        hari: HARI[dt.getDay()], 
+        pasaran: PASARAN[pi], 
+        tanggal: h.d, 
+        bulan: BULAN_JAWA[h.m - 1] || '-', 
+        tahun: h.y 
+    };
+}
+
+function pangkreman(dt) {
+    let t = new Date(dt.getTime());
+    for (let i = 0; i < 370; i++) {
+        let h = hijri(t);
+        if (h.m === 1 && h.d === 1) return jawa(t).pasaran;
+        t.setDate(t.getDate() - 1);
+    }
+    return null;
+}
+
+function bangas(b, h, p) {
+    let c = `${h} ${p}`.toUpperCase().replace(/JUM'AT/g, 'JUMAT');
+    let rules = [
+        { b: ['Suro', 'Sapar', 'Mulud'], h: ['SABTU LEGI', 'MINGGU LEGI'], a: 'WETAN' },
+        { b: ["Ba'da Mulud", 'Jumadil Awal', 'Jumadil Akhir'], h: ['SENIN PAHING', 'SELASA PAHING'], a: 'KIDUL' },
+        { b: ['Rejeb', 'Ruwah', 'Poso'], h: ['RABU PON', 'KAMIS PON'], a: 'KULON' },
+        { b: ['Sawal', 'Selo', 'Besar'], h: ['JUMAT WAGE'], a: 'LOR' }
+    ];
+    for (let r of rules) {
+        if (r.b.includes(b) && r.h.includes(c)) return { yes: true, desc: `Awas Dino Bangas! Arah nogo tahun di ${r.a}.` };
+    }
+    return { yes: false, desc: 'Bukan Dino Bangas. Hari ini aman.' };
+}
+
+function rek(p) {
+    return {
+        'Legi': { w: 'PUTIH', a: 'TIMUR', c: 'white' },
+        'Pahing': { w: 'MERAH', a: 'SELATAN', c: 'red' },
+        'Pon': { w: 'KUNING', a: 'BARAT', c: 'yellow' },
+        'Wage': { w: 'HITAM', a: 'UTARA', c: 'black' },
+        'Kliwon': { w: 'NETRAL', a: 'TENGAH', c: 'purple' }
+    }[p] || { w: '-', a: '', c: '' };
+}
+
+function pc(n) {
+    return {
+        1: ['Sri', 'rezeki dan keberuntungan'], 2: ['Lungguh', 'kedudukan dan kehormatan'],
+        3: ['Gedhong', 'kecukupan dan simpanan'], 4: ['Lara', 'ujian batin dan kepekaan'],
+        0: ['Pati', 'transformasi dan perlu kehati-hatian']
+    }[n % 5];
+}
+
+function kat(n) {
+    return n <= 9 ? 'Lembut & Adaptif' : n <= 13 ? 'Seimbang & Produktif' : n <= 16 ? 'Kuat & Berpengaruh' : 'Tinggi & Intens';
+}
+
+function color(el, c) { el.className = 'pill ' + (c || ''); }
+
+function checkDayStatus(dt) {
+    let j = jawa(dt);
+    let b = bangas(j.bulan, j.hari, j.pasaran);
+    let p = pangkreman(dt);
+    let isPangkreman = j.pasaran === p;
+    
+    if (b.yes && isPangkreman) return { type: 'danger', icon: '⛔', title: 'Bangas & Pangkreman', desc: 'Dilarang menggelar acara penting/besar hari ini.', badge: 'BANGAS & PANGKREMAN', bclass: 'danger' };
+    if (b.yes) return { type: 'danger', icon: '⚠️', title: 'Dino Bangas', desc: b.desc, badge: 'DINO BANGAS', bclass: 'danger' };
+    if (isPangkreman) return { type: 'orange', icon: '⚠️', title: 'Pangkreman', desc: `Hari pasaran sama dengan 1 Suro (${p}). Hindari acara penting.`, badge: 'PANGKREMAN', bclass: 'warn' };
+    
+    return { type: 'safe', icon: '✅', title: 'Hari Baik (Aman)', desc: 'Tidak ada pantangan Bangas atau Pangkreman hari ini.', badge: 'AMAN', bclass: 'safe' };
+}
+
+function updateHome() {
+    let today = new Date();
+    let j = jawa(today);
+    let status = checkDayStatus(today);
+
+    // Set today UI
+    $('homeHari').textContent = j.hari;
+    $('homePasaran').textContent = j.pasaran;
+    $('homeTgl').textContent = j.tanggal;
+    $('homeBulan').textContent = j.bulan;
+    $('homeTahun').textContent = j.tahun;
+    
+    let statBox = $('homeStatusBox');
+    statBox.className = 'status ' + status.type;
+    $('homeIcon').textContent = status.icon;
+    $('homeStatusTitle').textContent = status.title;
+    $('homeStatusDesc').textContent = status.desc;
+
+    // Generate forecast
+    let listHTML = '';
+    for (let i = 1; i <= 7; i++) {
+        let fDate = new Date();
+        fDate.setDate(today.getDate() + i);
+        let fj = jawa(fDate);
+        let fStat = checkDayStatus(fDate);
+        
+        listHTML += `
+            <div class="fc-item">
+                <div class="fc-date-wrap">
+                    <div class="fc-jawa">${fj.hari} <span>${fj.pasaran}</span></div>
+                    <div class="fc-date">${formatDateIndo(fDate)} • ${fj.tanggal} ${fj.bulan} ${fj.tahun}</div>
+                </div>
+                <div class="badge ${fStat.bclass}">${fStat.badge}</div>
+            </div>
+        `;
+    }
+    $('forecastList').innerHTML = listHTML;
+}
+
+function updateBangas() {
+    let dt = parseDate($('selectedDate').value);
+    $('selectedNotice').hidden = !!dt;
+    if (!dt) return;
+    
+    let j = jawa(dt), b = bangas(j.bulan, j.hari, j.pasaran), p = pangkreman(dt), r = rek(j.pasaran);
+    $('javaHari').textContent = j.hari;
+    $('javaPasaran').textContent = j.pasaran;
+    $('javaTgl').textContent = j.tanggal;
+    $('javaBulan').textContent = j.bulan;
+    $('javaTahun').textContent = j.tahun;
+    
+    $('bangasBox').className = 'status ' + (b.yes ? 'danger' : 'safe');
+    $('bangasIcon').textContent = b.yes ? '⚠️' : '✅';
+    $('bangasDesc').textContent = b.desc;
+    
+    $('pangkremanBox').className = 'status ' + (j.pasaran === p ? 'orange' : 'info');
+    $('pangkremanDesc').textContent = j.pasaran === p ? `Awas Pangkreman! (1 Suro = ${p})` : `Aman. (1 Suro = ${p || '...'})`;
+    
+    color($('warnaBox'), r.c);
+    $('warnaVal').textContent = r.w;
+    $('arahVal').textContent = r.a;
+}
+
+function updateWeton() {
+    let dt = parseDate($('birthDate').value);
+    $('birthNotice').hidden = !!dt;
+    if (!dt) return;
+    
+    let j = jawa(dt), nh = NEPTU_HARI[j.hari], np = NEPTU_PASARAN[j.pasaran], nt = nh + np, p = pc(nt), r = rek(j.pasaran);
+    
+    $('wetonHari').textContent = j.hari;
+    $('wetonPasaran').textContent = j.pasaran;
+    $('wetonTgl').textContent = j.tanggal;
+    $('wetonBulan').textContent = j.bulan;
+    $('wetonTahun').textContent = j.tahun;
+    $('nh').textContent = nh; $('np').textContent = np; $('nt').textContent = nt;
+    
+    $('trait1').textContent = `Weton ${j.hari} ${j.pasaran} menggambarkan pribadi yang ${HT[j.hari][0]}. Pengaruh pasaran ${j.pasaran} menambah sifat ${PT[j.pasaran][0]}.`;
+    $('trait2').textContent = `${HT[j.hari][1]}. Energi pasaran mendukung rezeki lewat bidang ${PT[j.pasaran][1]}.`;
+    $('trait3').textContent = `${HT[j.hari][2]}. Kuncinya menjaga keseimbangan, tidak terburu-buru, dan tetap rendah hati.`;
+    
+    $('pcName').textContent = p[0];
+    $('pcDesc').textContent = p[1];
+    $('kat').textContent = kat(nt);
+    
+    color($('wetonWarnaBox'), r.c);
+    $('wetonWarna').textContent = r.w;
+    $('wetonArah').textContent = r.a;
+    $('advice').innerHTML = `<p><b>Relasi:</b> cocok dengan komunikasi terbuka dan saling menghargai.</p><p style="margin-top:4px"><b>Rezeki:</b> bidang ${PT[j.pasaran][1]}.</p><p style="margin-top:8px;color:rgba(253,230,138,.75);font-style:italic">Catatan: tafsir weton adalah warisan budaya/hiburan, bukan keputusan mutlak.</p>`;
+}
+
+function menu(m) {
+    $('tabHome').classList.toggle('active', m === 'home');
+    $('tabBangas').classList.toggle('active', m === 'bangas');
+    $('tabWeton').classList.toggle('active', m === 'weton');
+    
+    $('viewHome').hidden = (m !== 'home');
+    $('viewBangas').hidden = (m !== 'bangas');
+    $('viewWeton').hidden = (m !== 'weton');
+}
+
+function init() {
+    // Setup inputs
+    $('selectedDate').value = todayStr();
+    $('birthDate').value = '2000-01-01';
+    
+    // Setup table
+    $('tableBody').innerHTML = TABLE.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+    
+    // Setup Listeners
+    ['change', 'input'].forEach(e => {
+        $('selectedDate').addEventListener(e, updateBangas);
+        $('birthDate').addEventListener(e, updateWeton);
+    });
+    
+    $('tabHome').onclick = () => menu('home');
+    $('tabBangas').onclick = () => menu('bangas');
+    $('tabWeton').onclick = () => menu('weton');
+    
+    $('openTable').onclick = () => $('modal').classList.add('show');
+    $('closeTable').onclick = () => $('modal').classList.remove('show');
+    $('modal').onclick = e => { if(e.target === $('modal')) $('modal').classList.remove('show') };
+    
+    // Update contents
+    updateHome();
+    updateBangas();
+    updateWeton();
+    
+    // Default Tab
+    menu('home');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
